@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import glob
 import json
 import re
@@ -35,6 +36,8 @@ from PIL import Image
 
 
 IMAGE_SUFFIXES = {".bmp", ".gif", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
+DEFAULT_SPECIES_COLUMN = "resolved_taxonomic_labels"
+DEFAULT_TEXT_EMBEDDING_CACHE_DIR = Path("outputs/text_embeddings")
 CROP_METADATA_FIELDS = [
     "image_path",
     "relative_image_path",
@@ -105,7 +108,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--species-column",
         default=None,
-        help="CSV column containing species labels. Defaults to resolved_taxonomic_labels.",
+        help=f"CSV column containing species labels. Defaults to {DEFAULT_SPECIES_COLUMN}.",
     )
     parser.add_argument("--output-csv", required=True, type=Path)
     parser.add_argument(
@@ -127,6 +130,20 @@ def parse_args() -> argparse.Namespace:
         help="Torch device for inference, for example 'cpu', 'cuda', or 'mps'.",
     )
     parser.add_argument(
+        "--text-embedding-cache-dir",
+        type=Path,
+        default=DEFAULT_TEXT_EMBEDDING_CACHE_DIR,
+        help=(
+            "Directory for cached BioCLIP text embeddings. Default: "
+            f"{DEFAULT_TEXT_EMBEDDING_CACHE_DIR}"
+        ),
+    )
+    parser.add_argument(
+        "--no-text-embedding-cache",
+        action="store_true",
+        help="Recompute text embeddings instead of reading/writing the cache.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Discover images and build crop metadata without running BioCLIP.",
@@ -140,8 +157,12 @@ def clean(value: object) -> str:
     return str(value).strip()
 
 
+def effective_species_column(species_column: str | None) -> str:
+    return species_column or DEFAULT_SPECIES_COLUMN
+
+
 def load_species(path: Path, species_column: str | None) -> list[str]:
-    column = species_column or "resolved_taxonomic_labels"
+    column = effective_species_column(species_column)
     with path.open(newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         if reader.fieldnames is None:
@@ -157,6 +178,34 @@ def load_species(path: Path, species_column: str | None) -> list[str]:
     if not unique_species:
         raise ValueError(f"No species labels found in {path}")
     return unique_species
+
+
+def text_embedding_cache_metadata(
+    species: list[str],
+    species_list: Path,
+    species_column: str,
+    model_str: str,
+) -> dict[str, object]:
+    return {
+        "version": 1,
+        "model_str": model_str,
+        "species_list": str(species_list.resolve()),
+        "species_column": species_column,
+        "species_count": len(species),
+        "species": species,
+    }
+
+
+def text_embedding_cache_path(
+    cache_dir: Path,
+    metadata: dict[str, object],
+) -> Path:
+    digest = hashlib.sha256(
+        json.dumps(metadata, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    ).hexdigest()[:16]
+    species_list_stem = Path(str(metadata["species_list"])).stem
+    species_column = re.sub(r"[^A-Za-z0-9_.-]+", "_", str(metadata["species_column"]))
+    return cache_dir / f"{species_list_stem}_{species_column}_{digest}.pt"
 
 
 def site_id_from_plot_id(plot_id: str) -> str:
@@ -374,7 +423,76 @@ def predict_crops(
 
     from bioclip.predict import CustomLabelsClassifier
 
-    classifier = CustomLabelsClassifier(cls_ary=species, device=args.device)
+    class CachedCustomLabelsClassifier(CustomLabelsClassifier):
+        def __init__(
+            self,
+            cls_ary: list[str],
+            cache_dir: Path | None,
+            species_list: Path,
+            species_column: str,
+            **kwargs: object,
+        ) -> None:
+            self.text_embedding_cache_dir = cache_dir
+            self.species_list = species_list
+            self.species_column = species_column
+            self.text_embedding_cache_status = "disabled"
+            self.text_embedding_cache_path = None
+            super().__init__(cls_ary=cls_ary, **kwargs)
+
+        def _get_txt_embeddings(self, classnames: list[str]):  # type: ignore[override]
+            if self.text_embedding_cache_dir is None:
+                return super()._get_txt_embeddings(classnames)
+
+            metadata = text_embedding_cache_metadata(
+                species=list(classnames),
+                species_list=self.species_list,
+                species_column=self.species_column,
+                model_str=getattr(self, "model_str", "unknown"),
+            )
+            cache_path = text_embedding_cache_path(
+                self.text_embedding_cache_dir,
+                metadata,
+            )
+            self.text_embedding_cache_path = cache_path
+
+            if cache_path.exists():
+                cached = torch.load(cache_path, map_location=self.device)
+                if (
+                    isinstance(cached, dict)
+                    and cached.get("metadata") == metadata
+                    and "txt_embeddings" in cached
+                ):
+                    txt_embeddings = cached["txt_embeddings"].to(self.device)
+                    if txt_embeddings.shape[1] == len(classnames):
+                        self.text_embedding_cache_status = "hit"
+                        return txt_embeddings
+
+            txt_embeddings = super()._get_txt_embeddings(classnames)
+            cache_path.parent.mkdir(parents=True, exist_ok=True)
+            torch.save(
+                {
+                    "metadata": metadata,
+                    "txt_embeddings": txt_embeddings.detach().cpu(),
+                },
+                cache_path,
+            )
+            self.text_embedding_cache_status = "miss"
+            return txt_embeddings
+
+    cache_dir = None if args.no_text_embedding_cache else args.text_embedding_cache_dir
+    classifier = CachedCustomLabelsClassifier(
+        cls_ary=species,
+        cache_dir=cache_dir,
+        species_list=args.resolved_species_list_path,
+        species_column=args.resolved_species_column,
+        device=args.device,
+    )
+    if classifier.text_embedding_cache_path is not None:
+        print(
+            "Text embedding cache: "
+            f"{classifier.text_embedding_cache_status} "
+            f"({classifier.text_embedding_cache_path})"
+        )
     predictions = classifier.predict(crops, k=len(species), batch_size=args.batch_size)
 
     species_index = {label: index for index, label in enumerate(species)}
@@ -421,6 +539,8 @@ def main() -> int:
         args.data_root,
     )
     species = load_species(species_list, args.species_column)
+    args.resolved_species_list_path = species_list
+    args.resolved_species_column = effective_species_column(args.species_column)
     crops, crop_meta = make_crops(image_paths, args.grid_size, args.data_root)
     if args.dry_run:
         print(f"Using species list: {species_list}")

@@ -172,6 +172,11 @@ image files, directories, or globs with `--images`.
 By default, inference labels come from the `resolved_taxonomic_labels` column.
 Pass `--species-column` only when testing a different label form.
 
+The first run for a species list computes BioCLIP text embeddings and caches
+them under `outputs/text_embeddings/`. Later runs with the same model, species
+list, species column, and label order reuse that cache. Use
+`--no-text-embedding-cache` to force recomputation.
+
 The prediction CSV records the image path, parsed plot metadata, subplot ID,
 image date, grid position, crop bounds, and a JSON `probability_vector` array.
 The vector order is the same as the loaded species list after de-duplication.
