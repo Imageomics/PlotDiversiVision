@@ -3,3 +3,7 @@ mkdocs-material
 mkdocs-material-extensions
 mkdocs-macros-plugin
 mkdocs-glightbox
+taxonopy
+pybioclip
+Pillow
+numpy<2

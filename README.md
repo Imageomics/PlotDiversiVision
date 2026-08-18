@@ -5,6 +5,178 @@ Welcome to the Collaborative Distributed Science Guide!
 Just joining or starting a new project?
 Check out the [Collaborative Distributed Science Guide](https://imageomics.github.io/Collaborative-distributed-science-guide/) for guidance on conventions and best practices.
 
+## Plant Species Label Workflow
+
+This repository includes scripts for preparing plant species labels and running
+BioCLIP 2 grid predictions. The workflow is:
+
+1. Create a TaxonoPy-passed species list once per NEON plot, or once per CONUS
+   state list.
+2. Map downstream labels by lookup from that resolved species list, without
+   rerunning TaxonoPy.
+3. Run BioCLIP 2 over image grid crops using the resolved species list.
+
+### Directory Layout
+
+- `assets/NEON_plotData.csv`: source NEON plot data used to extract plot-level
+  species labels.
+- `assets/conus_plant_lists_accepted.csv`: source CONUS accepted plant list
+  used for state-level Colorado and Virginia species lists.
+- `outputs/species_list/<name>/`: extracted species CSV, TaxonoPy work files,
+  and TaxonoPy cache.
+- `assets/species_list/<plot_id>_labels.csv`: final plot-specific
+  TaxonoPy-passed species lists for BioCLIP 2 label sets.
+- `assets/test_labels/`: subplot-level label files used for image
+  benchmarking.
+
+### TaxonoPy/GNVerifier Setup
+
+TaxonoPy uses GNVerifier for name resolution. Install `taxonopy` from
+`requirements.txt`, then make sure a `gnverifier` executable is available.
+This repo expects a local copy at:
+
+```text
+outputs/tools/gnverifier/bin/gnverifier
+```
+
+On macOS ARM64, download and extract the GNVerifier release:
+
+```bash
+mkdir -p outputs/tools/gnverifier/bin \
+  outputs/tools/gnverifier/downloads
+
+curl -L \
+  -o outputs/tools/gnverifier/downloads/gnverifier-v1.3.7-mac-arm64.tar.gz \
+  https://github.com/gnames/gnverifier/releases/download/v1.3.7/gnverifier-v1.3.7-mac-arm64.tar.gz
+
+tar -xzf outputs/tools/gnverifier/downloads/gnverifier-v1.3.7-mac-arm64.tar.gz \
+  -C outputs/tools/gnverifier/bin \
+  --strip-components 1
+
+chmod +x outputs/tools/gnverifier/bin/gnverifier
+```
+
+The species-list scripts prepend that directory to `PATH` automatically and
+redirect `HOME` into the run-specific `outputs/species_list/<name>/taxonopy/`
+directory. That keeps GNVerifier config files out of the user home directory
+and avoids permission issues in sandboxed runs.
+
+### Create Resolved Species Lists
+
+Use `scripts/create_taxonopy_species_list.py` when starting from
+`assets/NEON_plotData.csv`. It extracts unique species labels for a plot,
+runs TaxonoPy, and writes only the final resolved list to
+`assets/species_list/`.
+
+Example for one SCBI plot:
+
+```bash
+python scripts/create_taxonopy_species_list.py \
+  --source-csv assets/NEON_plotData.csv \
+  --plot-id SCBI_008 \
+  --name SCBI_008 \
+  --full-rerun
+```
+
+This writes intermediate files to:
+
+```text
+outputs/species_list/SCBI_008/
+```
+
+and the final label file to:
+
+```text
+assets/species_list/SCBI_008_labels.csv
+```
+
+Create separate species lists for each benchmark plot:
+
+```bash
+python scripts/create_taxonopy_species_list.py \
+  --source-csv assets/NEON_plotData.csv \
+  --plot-id SCBI_015 \
+  --name SCBI_015 \
+  --full-rerun
+```
+
+If a broader TaxonoPy-passed species list already exists, split it into
+plot-specific lists by lookup instead of rerunning TaxonoPy:
+
+```bash
+python scripts/create_taxonopy_species_list.py \
+  --source-csv assets/NEON_plotData.csv \
+  --plot-id SCBI_015 \
+  --name SCBI_015 \
+  --resolved-species-list assets/species_list/virginia_conus_labels.csv
+```
+
+For a single state from the CONUS accepted plant list, use
+`scripts/create_taxonopy_conus_species_list.py`:
+
+```bash
+python scripts/create_taxonopy_conus_species_list.py \
+  --source-csv assets/conus_plant_lists_accepted.csv \
+  --state Colorado \
+  --name colorado_conus \
+  --full-rerun
+```
+
+This writes the intermediate state species CSV to
+`outputs/species_list/colorado_conus/` and the final resolved list to
+`assets/species_list/colorado_conus_labels.csv`.
+
+### Create Test Label Files
+
+Once a TaxonoPy-passed species list exists, downstream label files should be
+mapped by lookup instead of resolving the same labels again. Use
+`scripts/map_labels_from_resolved_species_list.py` to create one subplot-level
+test label file for each benchmark plot:
+
+```bash
+python scripts/map_labels_from_resolved_species_list.py \
+  --plot-id SCBI_005
+```
+
+By default this reads `assets/NEON_plotData.csv`, looks up labels in
+`assets/species_list/<plot_id>_labels.csv`, and writes
+`assets/test_labels/<plot_id>_subplot_labels.csv`. The output has one row per
+subplot, with original NEON labels, resolved BioCLIP labels, resolved
+scientific names, TaxonoPy taxonomy strings, TaxonoPy resolution statuses, and
+any labels that could not be mapped.
+
+### Grid-Based BioCLIP 2 Predictions
+
+After preparing a species list, use `scripts/predict_grid_species.py` to split
+an image into a `3x3` or `4x4` grid and run BioCLIP 2 on each crop. The script
+uses the Python API and saves the full per-grid species probability list;
+integration across crops is left for a later step.
+
+Example:
+
+```bash
+python scripts/predict_grid_species.py \
+  --data-root data \
+  --plot-id SCBI_008 \
+  --grid-size 3 \
+  --output-csv outputs/grid_predictions/SCBI_008_predictions.csv
+```
+
+When `--species-list` is omitted, the script infers the site-level label set
+from the matched images, for example `assets/species_list/SCBI_labels.csv` for
+SCBI plots and `assets/species_list/CPER_labels.csv` for CPER plots. Pass
+`--species-list` explicitly only when you want to override that behavior with a
+plot-specific or custom label set. The script can also be pointed at explicit
+image files, directories, or globs with `--images`.
+
+By default, inference labels come from the `resolved_taxonomic_labels` column.
+Pass `--species-column` only when testing a different label form.
+
+The prediction CSV records the image path, parsed plot metadata, subplot ID,
+image date, grid position, crop bounds, and a JSON `probabilities` array
+containing every species probability for each crop. The year remains available
+as parsed metadata, but it is not a required filtering layer.
+
 ## About the Guide
 
 This guide started as an Imageomics Institute-internal wiki, focused on providing guidance and best practices for collaborative and interdisciplinary (computer science + biology) work. Recognizing that the topics and suggestions are broadly applicable to anyone working in similar or adjacent fields, we moved the vast majority to this [guide](https://imageomics.github.io/Collaborative-distributed-science-guide/). To increase accessibility for those less familiar with GitHub, we generated the website from our Markdown documents (which used to be wiki pages) with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
