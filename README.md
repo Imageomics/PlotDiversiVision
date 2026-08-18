@@ -173,9 +173,10 @@ By default, inference labels come from the `resolved_taxonomic_labels` column.
 Pass `--species-column` only when testing a different label form.
 
 The prediction CSV records the image path, parsed plot metadata, subplot ID,
-image date, grid position, crop bounds, and a JSON `probabilities` array
-containing every species probability for each crop. The year remains available
-as parsed metadata, but it is not a required filtering layer.
+image date, grid position, crop bounds, and a JSON `probability_vector` array.
+The vector order is the same as the loaded species list after de-duplication.
+The year remains available as parsed metadata, but it is not a required
+filtering layer.
 
 ## About the Guide
 

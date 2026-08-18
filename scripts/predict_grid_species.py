@@ -60,7 +60,7 @@ CROP_METADATA_FIELDS = [
 PREDICTION_FIELDS = [
     *CROP_METADATA_FIELDS,
     "species_count",
-    "probabilities",
+    "probability_vector",
 ]
 
 
@@ -377,26 +377,23 @@ def predict_crops(
     classifier = CustomLabelsClassifier(cls_ary=species, device=args.device)
     predictions = classifier.predict(crops, k=len(species), batch_size=args.batch_size)
 
-    probabilities_by_crop: dict[int, list[dict[str, object]]] = {
-        index: [] for index in range(len(crops))
+    species_index = {label: index for index, label in enumerate(species)}
+    probabilities_by_crop: dict[int, list[float]] = {
+        index: [0.0] * len(species) for index in range(len(crops))
     }
     for prediction in predictions:
         crop_index = int(prediction["file_name"])
-        probabilities_by_crop[crop_index].append(
-            {
-                "classification": prediction["classification"],
-                "probability": prediction["score"],
-            }
-        )
+        species_position = species_index[prediction["classification"]]
+        probabilities_by_crop[crop_index][species_position] = prediction["score"]
 
     rows: list[dict[str, object]] = []
     for crop_index, meta in enumerate(crop_meta):
-        probabilities = probabilities_by_crop[crop_index]
+        probability_vector = probabilities_by_crop[crop_index]
         rows.append(
             {
                 **{field: meta[field] for field in CROP_METADATA_FIELDS},
                 "species_count": len(species),
-                "probabilities": json.dumps(probabilities, ensure_ascii=False),
+                "probability_vector": json.dumps(probability_vector),
             }
         )
     return rows
