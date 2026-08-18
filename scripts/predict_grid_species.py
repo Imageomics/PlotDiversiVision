@@ -37,6 +37,7 @@ from PIL import Image
 
 IMAGE_SUFFIXES = {".bmp", ".gif", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
 DEFAULT_SPECIES_COLUMN = "resolved_taxonomic_labels"
+DEFAULT_PROBABILITY_COLUMN_NAME = "resolved_labels"
 DEFAULT_TEXT_EMBEDDING_CACHE_DIR = Path("outputs/text_embeddings")
 CROP_METADATA_FIELDS = [
     "image_path",
@@ -63,7 +64,6 @@ CROP_METADATA_FIELDS = [
 PREDICTION_FIELDS = [
     *CROP_METADATA_FIELDS,
     "species_count",
-    "probability_vector",
 ]
 
 
@@ -161,7 +161,28 @@ def effective_species_column(species_column: str | None) -> str:
     return species_column or DEFAULT_SPECIES_COLUMN
 
 
-def load_species(path: Path, species_column: str | None) -> list[str]:
+def make_unique_column_names(
+    names: list[str],
+    reserved_names: set[str] | None = None,
+) -> list[str]:
+    reserved_names = set(reserved_names or set())
+    used = set(reserved_names)
+    unique_names: list[str] = []
+    counts: dict[str, int] = {}
+
+    for name in names:
+        base_name = name or "species_probability"
+        candidate = base_name
+        while candidate in used:
+            counts[base_name] = counts.get(base_name, 1) + 1
+            candidate = f"{base_name}_{counts[base_name]}"
+        used.add(candidate)
+        unique_names.append(candidate)
+
+    return unique_names
+
+
+def load_species(path: Path, species_column: str | None) -> tuple[list[str], list[str]]:
     column = effective_species_column(species_column)
     with path.open(newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
@@ -172,12 +193,36 @@ def load_species(path: Path, species_column: str | None) -> list[str]:
                 f"Column '{column}' was not found in {path}. "
                 f"Available columns: {', '.join(reader.fieldnames)}"
             )
-        species = [clean(row.get(column)) for row in reader]
+        probability_name_column = (
+            DEFAULT_PROBABILITY_COLUMN_NAME
+            if DEFAULT_PROBABILITY_COLUMN_NAME in reader.fieldnames
+            else column
+        )
+        species_rows = [
+            (
+                clean(row.get(column)),
+                clean(row.get(probability_name_column)) or clean(row.get(column)),
+            )
+            for row in reader
+        ]
 
-    unique_species = list(dict.fromkeys(label for label in species if label))
+    unique_species_by_label: dict[str, str] = {}
+    for label, probability_column in species_rows:
+        if label and label not in unique_species_by_label:
+            unique_species_by_label[label] = probability_column
+
+    unique_species = list(unique_species_by_label.keys())
     if not unique_species:
         raise ValueError(f"No species labels found in {path}")
-    return unique_species
+    probability_columns = [
+        unique_species_by_label[label]
+        for label in unique_species
+    ]
+    probability_columns = make_unique_column_names(
+        probability_columns,
+        reserved_names=set(PREDICTION_FIELDS),
+    )
+    return unique_species, probability_columns
 
 
 def text_embedding_cache_metadata(
@@ -414,6 +459,7 @@ def predict_crops(
     crops: list[Image.Image],
     crop_meta: list[dict[str, object]],
     species: list[str],
+    species_probability_columns: list[str],
     args: argparse.Namespace,
 ) -> list[dict[str, object]]:
     import torch
@@ -511,16 +557,23 @@ def predict_crops(
             {
                 **{field: meta[field] for field in CROP_METADATA_FIELDS},
                 "species_count": len(species),
-                "probability_vector": json.dumps(probability_vector),
+                **dict(zip(species_probability_columns, probability_vector)),
             }
         )
     return rows
 
 
-def write_predictions(path: Path, rows: list[dict[str, object]]) -> None:
+def write_predictions(
+    path: Path,
+    rows: list[dict[str, object]],
+    species_probability_columns: list[str],
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=PREDICTION_FIELDS)
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[*PREDICTION_FIELDS, *species_probability_columns],
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -538,7 +591,10 @@ def main() -> int:
         image_paths,
         args.data_root,
     )
-    species = load_species(species_list, args.species_column)
+    species, species_probability_columns = load_species(
+        species_list,
+        args.species_column,
+    )
     args.resolved_species_list_path = species_list
     args.resolved_species_column = effective_species_column(args.species_column)
     crops, crop_meta = make_crops(image_paths, args.grid_size, args.data_root)
@@ -550,8 +606,14 @@ def main() -> int:
         print("Dry run complete; BioCLIP was not loaded")
         return 0
 
-    prediction_rows = predict_crops(crops, crop_meta, species, args)
-    write_predictions(args.output_csv, prediction_rows)
+    prediction_rows = predict_crops(
+        crops,
+        crop_meta,
+        species,
+        species_probability_columns,
+        args,
+    )
+    write_predictions(args.output_csv, prediction_rows, species_probability_columns)
 
     print(f"Loaded {len(species)} species labels")
     print(f"Using species list: {species_list}")
