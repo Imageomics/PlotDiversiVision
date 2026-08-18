@@ -7,3 +7,5 @@ __pycache__
 # MkDocs build output
 site/
 
+outputs/
+data/
