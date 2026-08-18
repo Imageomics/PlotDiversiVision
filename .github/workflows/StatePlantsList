@@ -1,0 +1,52 @@
+#Author Braedon Lineman -- Parsing with Claudeai
+# Pull NRCS state plant checklists from USDA PLANTS (state-level, CONUS)
+
+base <- "https://plants.sc.egov.usda.gov/DocumentLibrary/Txt/"
+
+# Try a few plausible filename patterns for a given state name.
+# Returns the first one that parses successfully, or NULL with a message.
+get_state_plants <- function(state) {
+  candidates <- c(
+    paste0(gsub(" ", "_", state), "_NRCS_csv.txt"),   # New_Hampshire_NRCS_csv.txt
+    paste0(gsub(" ", "", state), "_NRCS_csv.txt"),    # NewHampshire_NRCS_csv.txt
+    paste0(gsub(" ", "-", state), "_NRCS_csv.txt")    # New-Hampshire_NRCS_csv.txt
+  )
+  
+  for (fname in candidates) {
+    url <- paste0(base, fname)
+    df <- tryCatch(
+      read.csv(url, stringsAsFactors = FALSE, fileEncoding = "UTF-8"),
+      error = function(e) NULL
+    )
+    if (!is.null(df) && ncol(df) >= 5) {
+      df$state <- state
+      return(df)
+    }
+  }
+  message("FAILED all patterns for: ", state)
+  NULL
+}
+
+states <- c(
+  "Alabama","Arizona","Arkansas","California","Colorado","Connecticut",
+  "Delaware","Florida","Georgia","Idaho","Illinois","Indiana","Iowa",
+  "Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts",
+  "Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska",
+  "Nevada","New Hampshire","New Jersey","New Mexico","New York",
+  "North Carolina","North Dakota","Ohio","Oklahoma","Oregon",
+  "Pennsylvania","Rhode Island","South Carolina","South Dakota",
+  "Tennessee","Texas","Utah","Vermont","Virginia","Washington",
+  "West Virginia","Wisconsin","Wyoming"
+)
+
+res <- lapply(states, get_state_plants)
+all_plants <- do.call(rbind, res)
+
+# Drop synonym rows -- keep one row per accepted taxon per state
+accepted <- subset(all_plants, Synonym.Symbol == "")
+
+write.csv(all_plants, "conus_plant_lists_full.csv", row.names = FALSE)
+write.csv(accepted,   "conus_plant_lists_accepted.csv", row.names = FALSE)
+
+cat("States retrieved:", length(unique(all_plants$state)), "of", length(states), "\n")
+
