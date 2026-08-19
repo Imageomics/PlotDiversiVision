@@ -174,6 +174,8 @@ def build_mapping(
 
         resolved_scientific = clean(resolved.get("scientific_name"))
         resolved_ranks = {rank: clean(resolved.get(rank)) for rank in RANKS}
+        if resolved_ranks["species"]:
+            resolved_ranks["species"] = resolved_ranks["species"].split()[-1]
         taxonomic_label = " ".join(
             value for value in (resolved_ranks[rank] for rank in RANKS) if value
         )
@@ -181,7 +183,7 @@ def build_mapping(
         mapping[original_label] = {
             "label": original_label,
             "resolved_labels": (
-                resolved_ranks["species"] or resolved_scientific
+                " ".join([resolved_ranks["genus"], resolved_ranks["species"]]) or resolved_scientific
             ),
             "resolved_scientific_names": resolved_scientific,
             "resolved_taxonomic_labels": taxonomic_label,
@@ -200,11 +202,23 @@ def write_resolved_species_list(
     mapping: dict[str, dict[str, str]],
 ) -> None:
     output_rows: list[dict[str, str]] = []
+    resolved_labels_set = set()
     for row in read_csv(input_csv):
         label = clean(row.get(label_column))
         resolved = mapping.get(label)
-        if not resolved:
+
+        # Uncomment the following lines if you want to force the inclusion of all resolved labels
+        # if not resolved:
+        #     continue
+
+        if (
+                not resolved or
+                resolved["resolved_labels"] in resolved_labels_set or
+                resolved["taxonopy_resolution_statuses"] == "FAILED_FORCED_INPUT" or
+                len(resolved["resolved_taxonomic_labels"].split()) < 5
+            ):
             continue
+        resolved_labels_set.add(resolved["resolved_labels"])
         output_rows.append(
             {
                 "label": label,

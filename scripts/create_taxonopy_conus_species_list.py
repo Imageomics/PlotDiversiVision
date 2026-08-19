@@ -46,7 +46,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--gnverifier-bin-dir",
         type=Path,
-        default=Path("outputs/tools/gnverifier/bin"),
+        default=Path("outputs/tools/gnverifier"),
         help="Optional directory containing a local gnverifier executable.",
     )
     parser.add_argument("--batch-size", type=int, default=None)
