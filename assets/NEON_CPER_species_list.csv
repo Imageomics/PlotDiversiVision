@@ -1,0 +1,292 @@
+"siteID","taxonID","scientificName","taxonRank","family","nativeStatusCode","morphospeciesID","identificationReferences","identificationHistoryID"
+"CPER","ABLA","Abies lasiocarpa (Hook.) Nutt.","species","Pinaceae","N",NA,NA,NA
+"CPER","ABFR2","Abronia fragrans Nutt. ex Hook.","species","Nyctaginaceae","N",NA,NA,NA
+"CPER","ACMIA","Achillea millefolium L. var. alpicola (Rydb.) Garrett","variety","Asteraceae","N",NA,NA,NA
+"CPER","ACHY","Achnatherum hymenoides (Roem. & Schult.) Barkworth","species","Poaceae","N",NA,NA,NA
+"CPER","AGCR","Agropyron cristatum (L.) Gaertn.","species","Poaceae","I",NA,NA,NA
+"CPER","AGPE","Agrostis perennans (Walter) Tuck.","species","Poaceae","N",NA,NA,NA
+"CPER","ALTE","Allium textile A. Nelson & J.F. Macbr.","species","Liliaceae","N",NA,NA,NA
+"CPER","AMARA","Amaranthus sp.","genus","Amaranthaceae","UNK",NA,NA,NA
+"CPER","AMTO3","Ambrosia tomentosa Nutt.","species","Asteraceae","N",NA,NA,NA
+"CPER","ANME2","Antennaria media Greene","species","Asteraceae","N",NA,NA,NA
+"CPER","ARCA","Arabis canadensis L.","species","Brassicaceae","N",NA,NA,NA
+"CPER","ARCR5","Arabis crandallii B.L. Rob.","species","Brassicaceae","N",NA,NA,NA
+"CPER","ARDR","Arabis drummondii A. Gray","species","Brassicaceae","N",NA,NA,NA
+"CPER","ARPE","Arabis pendulina Greene","species","Brassicaceae","N",NA,NA,NA
+"CPER","ARFEF3","Arenaria fendleri A. Gray var. fendleri","variety","Caryophyllaceae","N",NA,NA,NA
+"CPER","ARHO4","Arenaria hookeri Nutt.","species","Caryophyllaceae","N","white up cushion",NA,NA
+"CPER","ARHOH3","Arenaria hookeri Nutt. ssp. hookeri","subspecies","Caryophyllaceae","N",NA,NA,NA
+"CPER","ARPO2","Argemone polyanthemos (Fedde) G.B. Ownbey","species","Papaveraceae","N",NA,NA,NA
+"CPER","ARGEM","Argemone sp.","genus","Papaveraceae","N",NA,NA,NA
+"CPER","ARPU9","Aristida purpurea Nutt.","species","Poaceae","N",NA,NA,NA
+"CPER","ARCO9","Arnica cordifolia Hook.","species","Asteraceae","N",NA,NA,NA
+"CPER","ARCA12","Artemisia campestris L.","species","Asteraceae","N",NA,NA,NA
+"CPER","ARDR4","Artemisia dracunculus L.","species","Asteraceae","N",NA,NA,NA
+"CPER","ARFI2","Artemisia filifolia Torr.","species","Asteraceae","N",NA,NA,NA
+"CPER","ARFR3","Artemisia franserioides Greene","species","Asteraceae","N",NA,NA,NA
+"CPER","ARFR4","Artemisia frigida Willd.","species","Asteraceae","N",NA,NA,NA
+"CPER","ARLU","Artemisia ludoviciana Nutt.","species","Asteraceae","N",NA,NA,NA
+"CPER","ARTEM","Artemisia sp.","genus","Asteraceae","UNK",NA,NA,NA
+"CPER","ARTEMSPP","Artemisia spp.","genus","Asteraceae","UNK","smelly artemesea",NA,NA
+"CPER","ASTER","Aster sp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","ASTERSPP","Aster spp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","ASTERA","Asteraceae sp.","family","Asteraceae","UNK",NA,NA,NA
+"CPER","ASTERASPP","Asteraceae spp.","family","Asteraceae","UNK",NA,NA,NA
+"CPER","ASGR15","Asterella gracilis (F. Weber) Underw.","species","Aytoniaceae","N",NA,NA,NA
+"CPER","ASCR2","Astragalus crassicarpus Nutt.","species","Fabaceae","N",NA,NA,NA
+"CPER","ASDR3","Astragalus drummondii Douglas ex Hook.","species","Fabaceae","N",NA,NA,NA
+"CPER","ASGR3","Astragalus gracilis Nutt.","species","Fabaceae","N",NA,NA,NA
+"CPER","ASMI10","Astragalus missouriensis Nutt.","species","Fabaceae","N",NA,NA,NA
+"CPER","ASMO7","Astragalus mollissimus Torr.","species","Fabaceae","N",NA,NA,NA
+"CPER","ASPE5","Astragalus pectinatus (Douglas ex Hook.) Douglas ex G. Don","species","Fabaceae","N",NA,NA,NA
+"CPER","ASRA2","Astragalus racemosus Pursh","species","Fabaceae","N",NA,NA,NA
+"CPER","ASTRA","Astragalus sp.","genus","Fabaceae","UNK",NA,NA,NA
+"CPER","ASTRASPP","Astragalus spp.","genus","Fabaceae","UNK",NA,NA,NA
+"CPER","ATCA2","Atriplex canescens (Pursh) Nutt.","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","ATRIP","Atriplex sp.","genus","Chenopodiaceae","UNK",NA,NA,NA
+"CPER","BASSI","Bassia sp.","genus","Chenopodiaceae","UNK",NA,NA,NA
+"CPER","BOGR","Boerhavia gracillima Heimerl","species","Nyctaginaceae","N",NA,NA,NA
+"CPER","BORAGI","Boraginaceae sp.","family","Boraginaceae","UNK",NA,NA,NA
+"CPER","BODA2","Bouteloua dactyloides (Nutt.) J.T. Columbus","species","Poaceae","N",NA,NA,NA
+"CPER","BOGR2","Bouteloua gracilis (Willd. ex Kunth) Lag. ex Griffiths","species","Poaceae","N",NA,NA,NA
+"CPER","BOUTE","Bouteloua sp.","genus","Poaceae","N",NA,NA,NA
+"CPER","BRASS2","Brassica sp.","genus","Brassicaceae","I",NA,NA,NA
+"CPER","BRASSI","Brassicaceae sp.","family","Brassicaceae","UNK",NA,NA,NA
+"CPER","BRTE","Bromus tectorum L.","species","Poaceae","I",NA,NA,NA
+"CPER","CACTAC","Cactaceae sp.","family","Cactaceae","UNK",NA,NA,NA
+"CPER","CAPA10","Campanula parryi A. Gray","species","Campanulaceae","N",NA,NA,NA
+"CPER","CARO2","Campanula rotundifolia L.","species","Campanulaceae","N",NA,NA,NA
+"CPER","CAPU6","Cardaria pubescens (C.A. Mey.) Jarmolenko","species","Brassicaceae","I",NA,NA,NA
+"CPER","CADU6","Carex duriuscula C.A. Mey.","species","Cyperaceae","N",NA,NA,NA
+"CPER","CAFI","Carex filifolia Nutt.","species","Cyperaceae","N",NA,NA,NA
+"CPER","CARUD","Carex rupestris All. var. drummondiana (Dewey) L.H. Bailey","variety","Cyperaceae","N",NA,NA,NA
+"CPER","CAREX","Carex sp.","genus","Cyperaceae","UNK",NA,NA,NA
+"CPER","CAREXSPP","Carex spp.","genus","Cyperaceae","UNK",NA,NA,NA
+"CPER","CHHE","Chaetopappa hersheyi S.F. Blake","species","Asteraceae","N",NA,NA,NA
+"CPER","CHGL13","Chamaesyce glyptosperma (Engelm.) Small","species","Euphorbiaceae","N",NA,NA,NA
+"CPER","CHGL13/CHSE6","Chamaesyce glyptosperma/serpyllifolia","speciesGroup","Euphorbiaceae","N",NA,NA,NA
+"CPER","CHSE6","Chamaesyce serpyllifolia (Pers.) Small","species","Euphorbiaceae","N",NA,NA,NA
+"CPER","CHAMA15","Chamaesyce sp.","genus","Euphorbiaceae","N",NA,NA,NA
+"CPER","CHAMA15SPP","Chamaesyce spp.","genus","Euphorbiaceae","N",NA,NA,NA
+"CPER","CHANC","Chamerion angustifolium (L.) Holub ssp. circumvagum (Mosquin) Hoch","subspecies","Onagraceae","N",NA,NA,NA
+"CPER","CHENOP","Chenopodiaceae sp.","family","Chenopodiaceae","UNK",NA,NA,NA
+"CPER","CHENOPSPP","Chenopodiaceae spp.","family","Chenopodiaceae","UNK","Rubber-sword",NA,NA
+"CPER","CHAL7","Chenopodium album L.","species","Chenopodiaceae","NI",NA,NA,NA
+"CPER","CHAT","Chenopodium atrovirens Rydb.","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","CHDE","Chenopodium desiccatum A. Nelson","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","CHGL3","Chenopodium glaucum L.","species","Chenopodiaceae","I",NA,NA,NA
+"CPER","CHHI","Chenopodium hians Standl.","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","CHIN2","Chenopodium incanum (S. Watson) A. Heller","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","CHLE4","Chenopodium leptophyllum (Moq.) Nutt. ex S. Watson","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","CHPR5","Chenopodium pratericola Rydb.","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","CHENO","Chenopodium sp.","genus","Chenopodiaceae","UNK",NA,NA,NA
+"CPER","CHENOSPP","Chenopodium spp.","genus","Chenopodiaceae","UNK",NA,NA,NA
+"CPER","CHWA","Chenopodium watsonii A. Nelson","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","CICA11","Cirsium canescens Nutt.","species","Asteraceae","N",NA,NA,NA
+"CPER","CIOC2","Cirsium ochrocentrum A. Gray","species","Asteraceae","N",NA,NA,NA
+"CPER","CISC2","Cirsium scariosum Nutt.","species","Asteraceae","N",NA,NA,NA
+"CPER","CIRSI","Cirsium sp.","genus","Asteraceae","UNK",NA,NA,NA
+"CPER","CIRSISPP","Cirsium spp.","genus","Asteraceae","UNK",NA,NA,NA
+"CPER","CLSE","Cleome serrulata Pursh","species","Capparaceae","N",NA,NA,NA
+"CPER","COMAN","Comandra sp.","genus","Santalaceae","N",NA,NA,NA
+"CPER","COUM","Comandra umbellata (L.) Nutt.","species","Santalaceae","N",NA,NA,NA
+"CPER","COAR4","Convolvulus arvensis L.","species","Convolvulaceae","I",NA,NA,NA
+"CPER","COCA5","Conyza canadensis (L.) Cronquist","species","Asteraceae","N",NA,NA,NA
+"CPER","COCA15","Corydalis caseana A. Gray","species","Fumariaceae","N",NA,NA,NA
+"CPER","CRCIJ","Cryptantha cinerea (Greene) Cronquist var. jamesii (Torr.) Cronquist","variety","Boraginaceae","N",NA,NA,NA
+"CPER","CRCR3","Cryptantha crassisepala (Torr. & A. Gray) Greene","species","Boraginaceae","N",NA,NA,NA
+"CPER","CRMI5","Cryptantha minima Rydb.","species","Boraginaceae","N",NA,NA,NA
+"CPER","CRYPT","Cryptantha sp.","genus","Boraginaceae","UNK",NA,NA,NA
+"CPER","CRYPTSPP","Cryptantha spp.","genus","Boraginaceae","UNK",NA,NA,NA
+"CPER","CRAC3","Cryptogramma acrostichoides R. Br.","species","Pteridaceae","N",NA,NA,NA
+"CPER","CUCAB","Cuscuta californica Hook. & Arn. var. breviflora Engelm.","variety","Cuscutaceae","N",NA,NA,NA
+"CPER","CUSAS","Cuscuta salina Engelm. var. salina","variety","Cuscutaceae","N",NA,NA,NA
+"CPER","CYAC","Cymopterus acaulis (Pursh) Raf.","species","Apiaceae","N",NA,NA,NA
+"CPER","CYMO","Cymopterus montanus Nutt. ex Torr. & A. Gray","species","Apiaceae","N",NA,NA,NA
+"CPER","CYPERA","Cyperaceae sp.","family","Cyperaceae","UNK",NA,NA,NA
+"CPER","DACA7","Dalea candida Michx. ex Willd.","species","Fabaceae","N",NA,NA,NA
+"CPER","DACAO","Dalea candida Michx. ex Willd. var. oligophylla (Torr.) Shinners","variety","Fabaceae","N",NA,NA,NA
+"CPER","DEGE2","Delphinium geyeri Greene","species","Ranunculaceae","N",NA,NA,NA
+"CPER","DENU2","Delphinium nuttallianum Pritz. ex Walp.","species","Ranunculaceae","N",NA,NA,NA
+"CPER","DEPI","Descurainia pinnata (Walter) Britton","species","Brassicaceae","N",NA,NA,NA
+"CPER","DESCU","Descurainia sp.","genus","Brassicaceae","UNK",NA,NA,NA
+"CPER","DISP","Distichlis spicata (L.) Greene","species","Poaceae","N",NA,NA,NA
+"CPER","DRRE2","Draba reptans (Lam.) Fernald","species","Brassicaceae","N",NA,NA,NA
+"CPER","DRABA","Draba sp.","genus","Brassicaceae","N",NA,NA,NA
+"CPER","ECVI2","Echinocereus viridiflorus Engelm.","species","Cactaceae","N",NA,NA,NA
+"CPER","ELNY","Ellisia nyctelea (L.) L.","species","Hydrophyllaceae","N",NA,NA,NA
+"CPER","ELEL5","Elymus elymoides (Raf.) Swezey","species","Poaceae","N",NA,NA,NA
+"CPER","ERNA10","Ericameria nauseosa (Pall. ex Pursh) G.L. Nesom & Baird","species","Asteraceae","N",NA,NA,NA
+"CPER","ERNAN5","Ericameria nauseosa (Pall. ex Pursh) G.L. Nesom & Baird ssp. nauseosa var. nauseosa","variety","Asteraceae","N",NA,NA,NA
+"CPER","ERBE2","Erigeron bellidiastrum Nutt.","species","Asteraceae","N",NA,NA,NA
+"CPER","ERFL","Erigeron flagellaris A. Gray","species","Asteraceae","N","super fine daisy",NA,NA
+"CPER","ERIGE2","Erigeron sp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","EREF","Eriogonum effusum Nutt.","species","Polygonaceae","N",NA,NA,NA
+"CPER","EREP","Eriogonum ephedroides Reveal","species","Polygonaceae","N",NA,NA,NA
+"CPER","ERNA","Eritrichium nanum (Vill.) Schrad. ex Gaudin","species","Boraginaceae","N",NA,NA,NA
+"CPER","ERAS2","Erysimum asperum (Nutt.) DC.","species","Brassicaceae","N",NA,NA,NA
+"CPER","ESVI2","Escobaria vivipara (Nutt.) Buxbaum","species","Cactaceae","N",NA,NA,NA
+"CPER","EVNU","Evolvulus nuttallianus Schult.","species","Convolvulaceae","N",NA,NA,NA
+"CPER","FABACE","Fabaceae sp.","family","Fabaceae","UNK","tammy taco",NA,NA
+"CPER","FABACESPP","Fabaceae spp.","family","Fabaceae","UNK",NA,NA,NA
+"CPER","FRVI","Fragaria virginiana Duchesne","species","Rosaceae","N",NA,NA,NA
+"CPER","GACO2","Galium coloradoense W. Wight","species","Rubiaceae","N",NA,NA,NA
+"CPER","GACO3","Galium concinnum Torr. & A. Gray","species","Rubiaceae","N",NA,NA,NA
+"CPER","GRSQ","Grindelia squarrosa (Pursh) Dunal","species","Asteraceae","N",NA,NA,NA
+"CPER","GUSA2","Gutierrezia sarothrae (Pursh) Britton & Rusby","species","Asteraceae","N",NA,NA,NA
+"CPER","HEAN3","Helianthus annuus L.","species","Asteraceae","N",NA,NA,NA
+"CPER","HEPE","Helianthus petiolaris Nutt.","species","Asteraceae","N",NA,NA,NA
+"CPER","HELIA3","Helianthus sp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","HECR3","Herissantia crispa (L.) Briz.","species","Malvaceae","N",NA,NA,NA
+"CPER","HECO26","Hesperostipa comata (Trin. & Rupr.) Barkworth","species","Poaceae","N",NA,NA,NA
+"CPER","HETER8","Heterotheca sp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","HEVI4","Heterotheca villosa (Pursh) Shinners","species","Asteraceae","N",NA,NA,NA
+"CPER","HYFI","Hymenopappus filifolius Hook.","species","Asteraceae","N",NA,NA,NA
+"CPER","IPLA2","Ipomopsis laxiflora (J.M. Coult.) V.E. Grant","species","Polemoniaceae","N",NA,NA,NA
+"CPER","IPOMO2","Ipomopsis sp.","genus","Polemoniaceae","N",NA,NA,NA
+"CPER","IVAX","Iva axillaris Pursh","species","Asteraceae","N",NA,NA,NA
+"CPER","JUCO6","Juniperus communis L.","species","Cupressaceae","N",NA,NA,NA
+"CPER","KRLA","Krameria lanceolata Torr.","species","Krameriaceae","N",NA,NA,NA
+"CPER","KRLA2","Krascheninnikovia lanata (Pursh) A. Meeuse & Smit","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","LASE","Lactuca serriola L.","species","Asteraceae","I",NA,NA,NA
+"CPER","LAMIAC","Lamiaceae sp.","family","Lamiaceae","UNK",NA,NA,NA
+"CPER","LAOC3","Lappula occidentalis (S. Watson) Greene","species","Boraginaceae","N","lap stick",NA,NA
+"CPER","LAOCO","Lappula occidentalis (S. Watson) Greene var. occidentalis","variety","Boraginaceae","N",NA,NA,NA
+"CPER","LAPPU","Lappula sp.","genus","Boraginaceae","UNK",NA,NA,NA
+"CPER","LEPE","Lemna perpusilla Torr.","species","Lemnaceae","N",NA,NA,NA
+"CPER","LEDE","Lepidium densiflorum Schrad.","species","Brassicaceae","NI",NA,NA,NA
+"CPER","LEMO2","Lepidium montanum Nutt.","species","Brassicaceae","N",NA,NA,NA
+"CPER","LEPID","Lepidium sp.","genus","Brassicaceae","UNK",NA,NA,NA
+"CPER","LELU","Lesquerella ludoviciana (Nutt.) S. Watson","species","Brassicaceae","N",NA,NA,NA
+"CPER","LEMO4","Leucocrinum montanum Nutt. ex A. Gray","species","Liliaceae","N",NA,NA,NA
+"CPER","LIPU","Liatris punctata Hook.","species","Asteraceae","N",NA,NA,NA
+"CPER","LIDA","Linaria dalmatica (L.) Mill.","species","Scrophulariaceae","I",NA,NA,NA
+"CPER","LIRI","Linum rigidum Pursh","species","Linaceae","N",NA,NA,NA
+"CPER","LIRIR","Linum rigidum Pursh var. rigidum","variety","Linaceae","N",NA,NA,NA
+"CPER","LIIN2","Lithospermum incisum Lehm.","species","Boraginaceae","N",NA,NA,NA
+"CPER","LITHO3","Lithospermum sp.","genus","Boraginaceae","N",NA,NA,NA
+"CPER","LITHO3SPP","Lithospermum spp.","genus","Boraginaceae","N",NA,NA,NA
+"CPER","LOMA","Lobularia maritima (L.) Desv.","species","Brassicaceae","I",NA,NA,NA
+"CPER","LONU3","Lomatium nuttallii (A. Gray) J.F. Macbr.","species","Apiaceae","N",NA,NA,NA
+"CPER","LOOR","Lomatium orientale J.M. Coult. & Rose","species","Apiaceae","N",NA,NA,NA
+"CPER","LOPL2","Lotus plebeius (Brandegee) Barneby","species","Fabaceae","N",NA,NA,NA
+"CPER","LUPU","Lupinus pusillus Pursh","species","Fabaceae","N",NA,NA,NA
+"CPER","LYJU","Lygodesmia juncea (Pursh) D. Don ex Hook.","species","Asteraceae","N",NA,NA,NA
+"CPER","LYJU/STPA4","Lygodesmia juncea/Stephanomeria pauciflora","speciesGroup","Asteraceae","N",NA,NA,NA
+"CPER","MAPI","Machaeranthera pinnatifida (Hook.) Shinners","species","Asteraceae","N",NA,NA,NA
+"CPER","MAPI/MATA2","Machaeranthera pinnatifida/tanacetifolia","speciesGroup","Asteraceae","N",NA,NA,NA
+"CPER","MACHA","Machaeranthera sp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","MACHASPP","Machaeranthera spp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","MATA2","Machaeranthera tanacetifolia (Kunth) Nees","species","Asteraceae","N",NA,NA,NA
+"CPER","MELU","Medicago lupulina L.","species","Fabaceae","I",NA,NA,NA
+"CPER","MESA","Medicago sativa L.","species","Fabaceae","I",NA,NA,NA
+"CPER","MEOF","Melilotus officinalis (L.) Lam.","species","Fabaceae","I",NA,NA,NA
+"CPER","MENU","Mentzelia nuda (Pursh) Torr. & A. Gray","species","Loasaceae","N",NA,NA,NA
+"CPER","MENUN","Mentzelia nuda (Pursh) Torr. & A. Gray var. nuda","variety","Loasaceae","N",NA,NA,NA
+"CPER","MIOB2","Minuartia obtusiloba (Rydb.) House","species","Caryophyllaceae","N",NA,NA,NA
+"CPER","MILI3","Mirabilis linearis (Pursh) Heimerl","species","Nyctaginaceae","N",NA,NA,NA
+"CPER","MIRAB","Mirabilis sp.","genus","Nyctaginaceae","UNK",NA,NA,NA
+"CPER","MIRABSPP","Mirabilis spp.","genus","Nyctaginaceae","UNK",NA,NA,NA
+"CPER","MONU","Monolepis nuttalliana (Schult.) Greene","species","Chenopodiaceae","N",NA,NA,NA
+"CPER","MUMI2","Muhlenbergia minutissima (Steud.) Swallen","species","Poaceae","N",NA,NA,NA
+"CPER","MURI","Muhlenbergia richardsonis (Trin.) Rydb.","species","Poaceae","N",NA,NA,NA
+"CPER","MUTO2","Muhlenbergia torreyi (Kunth) Hitchc. ex Bush","species","Poaceae","N",NA,NA,NA
+"CPER","MUSQ3","Munroa squarrosa (Nutt.) Torr.","species","Poaceae","N",NA,NA,NA
+"CPER","NYCTAG","Nyctaginaceae sp.","family","Nyctaginaceae","UNK",NA,NA,NA
+"CPER","OEAL","Oenothera albicaulis Pursh","species","Onagraceae","N",NA,NA,NA
+"CPER","OECA3","Oenothera canescens Torr. & Frém.","species","Onagraceae","N",NA,NA,NA
+"CPER","OECO2","Oenothera coronopifolia Torr. & A. Gray","species","Onagraceae","N",NA,NA,NA
+"CPER","OENOT","Oenothera sp.","genus","Onagraceae","UNK",NA,NA,NA
+"CPER","OENOTSPP","Oenothera spp.","genus","Onagraceae","UNK",NA,NA,NA
+"CPER","OESU3","Oenothera suffrutescens (Ser.) W.L. Wagner & Hoch","species","Onagraceae","N",NA,NA,"04F23CF26ED74ABC95C6C7696126D2BB"
+"CPER","ONAGRASPP","Onagraceae spp.","family","Onagraceae","UNK",NA,NA,NA
+"CPER","OPPO","Opuntia polyacantha Haw.","species","Cactaceae","N",NA,NA,NA
+"CPER","OPPOE","Opuntia polyacantha Haw. var. erinacea (Engelm. & J.M. Bigelow ex Engelm.) Parfitt","variety","Cactaceae","N",NA,NA,NA
+"CPER","OPPOP","Opuntia polyacantha Haw. var. polyacantha","variety","Cactaceae","N",NA,NA,NA
+"CPER","ORFA","Orobanche fasciculata Nutt.","species","Orobanchaceae","N",NA,NA,NA
+"CPER","OXSE","Oxytropis sericea Nutt.","species","Fabaceae","N",NA,NA,NA
+"CPER","OXYTR","Oxytropis sp.","genus","Fabaceae","N","long pod",NA,NA
+"CPER","OXYTRSPP","Oxytropis spp.","genus","Fabaceae","N",NA,NA,NA
+"CPER","PANE7","Packera neomexicana (A. Gray) W.A. Weber & Á. Löve","species","Asteraceae","N",NA,NA,NA
+"CPER","PACKE","Packera sp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","PATR7","Packera tridenticulata (Rydb.) W.A. Weber & Á. Löve","species","Asteraceae","N",NA,NA,NA
+"CPER","PACA6","Panicum capillare L.","species","Poaceae","N",NA,NA,NA
+"CPER","PASM","Pascopyrum smithii (Rydb.) Á. Löve","species","Poaceae","N",NA,NA,NA
+"CPER","PERAA","Pedicularis racemosa Douglas ex Benth. ssp. alba Pennell","subspecies","Scrophulariaceae","N",NA,NA,NA
+"CPER","PESI","Pediocactus simpsonii (Engelm.) Britton & Rose","species","Cactaceae","N",NA,NA,NA
+"CPER","PEAL2","Penstemon albidus Nutt.","species","Scrophulariaceae","N",NA,NA,NA
+"CPER","PEAN4","Penstemon angustifolius Nutt. ex Pursh","species","Scrophulariaceae","N",NA,NA,NA
+"CPER","PEOP","Penstemon ophianthus Pennell","species","Scrophulariaceae","N",NA,NA,NA
+"CPER","PENST","Penstemon sp.","genus","Scrophulariaceae","UNK",NA,NA,NA
+"CPER","PENSTSPP","Penstemon spp.","genus","Scrophulariaceae","UNK",NA,NA,NA
+"CPER","PEWH","Penstemon whippleanus A. Gray","species","Scrophulariaceae","N",NA,NA,NA
+"CPER","PHPA29","Phemeranthus parviflorus (Nutt.) Kiger","species","Portulacaceae","N",NA,NA,NA
+"CPER","PHCU3","Phyla cuneifolia (Torr.) Greene","species","Verbenaceae","N",NA,NA,NA
+"CPER","PHHI8","Physalis hispida (Waterf.) Cronquist","species","Solanaceae","N",NA,NA,NA
+"CPER","PIEN","Picea engelmannii Parry ex Engelm.","species","Pinaceae","N",NA,NA,NA
+"CPER","PIOP","Picradeniopsis oppositifolia (Nutt.) Rydb. ex Britton","species","Asteraceae","N",NA,NA,NA
+"CPER","PIFO","Pilea fontana (Lunell) Rydb.","species","Urticaceae","N",NA,NA,NA
+"CPER","PIFL2","Pinus flexilis James","species","Pinaceae","N",NA,NA,NA
+"CPER","PLPA2","Plantago patagonica Jacq.","species","Plantaginaceae","N",NA,NA,NA
+"CPER","POCU3","Poa cusickii Vasey","species","Poaceae","N",NA,NA,NA
+"CPER","POACEA","Poaceae sp.","family","Poaceae","UNK","The Kraken",NA,NA
+"CPER","POACEASPP","Poaceae spp.","family","Poaceae","UNK",NA,NA,NA
+"CPER","POPUD3","Polemonium pulcherrimum Hook. ssp. delicatum (Rydb.) Brand","subspecies","Polemoniaceae","N",NA,NA,NA
+"CPER","POOL","Portulaca oleracea L.","species","Portulacaceae","I",NA,NA,NA
+"CPER","POPE8","Potentilla pensylvanica L.","species","Rosaceae","N",NA,NA,NA
+"CPER","PSLA3","Psoralidium lanceolatum (Pursh) Rydb.","species","Fabaceae","N",NA,NA,NA
+"CPER","PSTE5","Psoralidium tenuiflorum (Pursh) Rydb.","species","Fabaceae","N",NA,NA,NA
+"CPER","RACO3","Ratibida columnifera (Nutt.) Woot. & Standl.","species","Asteraceae","N",NA,NA,NA
+"CPER","RUVE2","Rumex venosus Pursh","species","Polygonaceae","N",NA,NA,NA
+"CPER","SACO8","Salsola collina Pall.","species","Chenopodiaceae","I",NA,NA,NA
+"CPER","SALSO","Salsola sp.","genus","Chenopodiaceae","I",NA,NA,NA
+"CPER","SCROPH","Scrophulariaceae sp.","family","Scrophulariaceae","UNK",NA,NA,NA
+"CPER","SCBR3","Scutellaria brittonii Porter","species","Lamiaceae","N",NA,NA,NA
+"CPER","SCUTE","Scutellaria sp.","genus","Lamiaceae","UNK",NA,NA,NA
+"CPER","SESP3","Senecio spartioides Torr. & A. Gray","species","Asteraceae","N",NA,NA,NA
+"CPER","SIAL2","Sisymbrium altissimum L.","species","Brassicaceae","I",NA,NA,NA
+"CPER","SOLANA","Solanaceae sp.","family","Solanaceae","UNK",NA,NA,NA
+"CPER","SORO","Solanum rostratum Dunal","species","Solanaceae","N",NA,NA,NA
+"CPER","SOTR","Solanum triflorum Nutt.","species","Solanaceae","N",NA,NA,NA
+"CPER","SOSI3","Solidago simplex Kunth","species","Asteraceae","N",NA,NA,NA
+"CPER","SONU","Sophora nuttalliana B.L. Turner","species","Fabaceae","N",NA,NA,NA
+"CPER","SOPHO","Sophora sp.","genus","Fabaceae","N",NA,NA,NA
+"CPER","SPCO","Sphaeralcea coccinea (Nutt.) Rydb.","species","Malvaceae","N",NA,NA,NA
+"CPER","SPAI","Sporobolus airoides (Torr.) Torr.","species","Poaceae","N",NA,NA,NA
+"CPER","SPCO16","Sporobolus compositus (Poir.) Merr.","species","Poaceae","N",NA,NA,NA
+"CPER","SPCO4","Sporobolus contractus Hitchc.","species","Poaceae","N",NA,NA,NA
+"CPER","SPCR","Sporobolus cryptandrus (Torr.) A. Gray","species","Poaceae","N",NA,NA,NA
+"CPER","SPORO","Sporobolus sp.","genus","Poaceae","UNK",NA,NA,NA
+"CPER","STAL2","Stanleya albescens M.E. Jones","species","Brassicaceae","N",NA,NA,NA
+"CPER","STPA4","Stephanomeria pauciflora (Torr.) A. Nelson","species","Asteraceae","N",NA,NA,NA
+"CPER","SYFAC","Symphyotrichum falcatum (Lindl.) G.L. Nesom var. commutatum (Torr. & A. Gray) G.L. Nesom","variety","Asteraceae","N","white gaco",NA,NA
+"CPER","SYSE2","Symphyotrichum sericeum (Vent.) G.L. Nesom","species","Asteraceae","N",NA,NA,NA
+"CPER","TAOF","Taraxacum officinale F.H. Wigg.","species","Asteraceae","NI",NA,NA,NA
+"CPER","THFE","Thalictrum fendleri Engelm. ex A. Gray","species","Ranunculaceae","N",NA,NA,NA
+"CPER","THFI","Thelesperma filifolium (Hook.) A. Gray","species","Asteraceae","N",NA,NA,NA
+"CPER","THME","Thelesperma megapotamicum (Spreng.) Kuntze","species","Asteraceae","N",NA,NA,NA
+"CPER","THELE","Thelesperma sp.","genus","Asteraceae","N",NA,NA,NA
+"CPER","THEL","Thelypodiopsis elegans (M.E. Jones) Rydb.","species","Brassicaceae","N",NA,NA,NA
+"CPER","THDI4","Thermopsis divaricarpa A. Nelson","species","Fabaceae","N",NA,NA,NA
+"CPER","THAR5","Thlaspi arvense L.","species","Brassicaceae","I",NA,NA,NA
+"CPER","TOHO","Townsendia hookeri Beaman","species","Asteraceae","N",NA,NA,NA
+"CPER","TROC","Tradescantia occidentalis (Britton) Smyth","species","Commelinaceae","N",NA,NA,NA
+"CPER","TRDU","Tragopogon dubius Scop.","species","Asteraceae","I",NA,NA,NA
+"CPER","TRDU/TRPR","Tragopogon dubius/pratensis","speciesGroup","Asteraceae","I",NA,NA,NA
+"CPER","TRLA30","Tragopogon lamottei Rouy","species","Asteraceae","I",NA,NA,NA
+"CPER","TRAGO","Tragopogon sp.","genus","Asteraceae","I",NA,NA,NA
+"CPER","TRAGOSPP","Tragopogon spp.","genus","Asteraceae","I",NA,NA,NA
+"CPER","TRDA2","Trifolium dasyphyllum Torr. & A. Gray","species","Fabaceae","N",NA,NA,NA
+"CPER","TRMI6","Tripterocalyx micranthus (Torr.) Hook.","species","Nyctaginaceae","N",NA,NA,NA
+"CPER","TRITI","Triticum sp.","genus","Poaceae","I",NA,NA,NA
+"CPER","2PLANT","Unknown plant","kingdom",NA,"UNK","Barrel Cactus",NA,NA
+"CPER","VACCI","Vaccinium sp.","genus","Ericaceae","N",NA,NA,NA
+"CPER","VEBR","Verbena bracteata Cav. ex Lag. & Rodr.","species","Verbenaceae","N",NA,NA,NA
+"CPER","VIAM","Vicia americana Muhl. ex Willd.","species","Fabaceae","N",NA,NA,NA
+"CPER","VICIASPP","Vicia spp.","genus","Fabaceae","UNK",NA,NA,NA
+"CPER","VINU2","Viola nuttallii Pursh","species","Violaceae","N",NA,NA,NA
+"CPER","VIOLA","Viola sp.","genus","Violaceae","UNK",NA,NA,NA
+"CPER","VIOLAC","Violaceae sp.","family","Violaceae","UNK","Three nut violet_2017",NA,NA
+"CPER","VUOC","Vulpia octoflora (Walter) Rydb.","species","Poaceae","N",NA,NA,NA
+"CPER","VUOCO","Vulpia octoflora (Walter) Rydb. var. octoflora","variety","Poaceae","N",NA,NA,NA
+"CPER","YUGL","Yucca glauca Nutt.","species","Agavaceae","N",NA,NA,NA

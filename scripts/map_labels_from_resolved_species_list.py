@@ -98,7 +98,7 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
 
 
 def default_species_list_path(plot_id: str) -> Path:
-    return DEFAULT_SPECIES_LIST_DIR / f"{plot_id}_labels.csv"
+    return DEFAULT_SPECIES_LIST_DIR / f"{plot_id.split('_')[0]}_plot_labels.csv"
 
 
 def default_output_path(plot_id: str) -> Path:

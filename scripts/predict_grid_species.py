@@ -114,7 +114,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--grid-size",
         type=int,
-        choices=(3, 4),
         default=3,
         help="Use 3 for a 3x3 grid or 4 for a 4x4 grid.",
     )

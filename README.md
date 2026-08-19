@@ -10,22 +10,22 @@ Check out the [Collaborative Distributed Science Guide](https://imageomics.githu
 This repository includes scripts for preparing plant species labels and running
 BioCLIP 2 grid predictions. The workflow is:
 
-1. Create a TaxonoPy-passed species list once per NEON plot, or once per CONUS
-   state list.
-2. Map downstream labels by lookup from that resolved species list, without
-   rerunning TaxonoPy.
+1. Create TaxonoPy-passed species lists for NEON plots to get ground-truth
+   labels and for species lists from different sources.
+2. Map downstream labels by lookup from that resolved species list.
 3. Run BioCLIP 2 over image grid crops using the resolved species list.
 
 ### Directory Layout
 
 - `assets/NEON_plotData.csv`: source NEON plot data used to extract plot-level
   species labels.
+- `assets/neonSiteSpeciesList.csv`: source plant list from NEON
+  used for site-level species lists.
+- `assets/<name>_BONAPlist.csv`: source BONAP plant list used for region-level
+  species lists.
 - `assets/conus_plant_lists_accepted.csv`: source CONUS accepted plant list
-  used for state-level Colorado and Virginia species lists.
-- `outputs/species_list/<name>/`: extracted species CSV, TaxonoPy work files,
-  and TaxonoPy cache.
-- `assets/species_list/<plot_id>_labels.csv`: final plot-specific
-  TaxonoPy-passed species lists for BioCLIP 2 label sets.
+  used for state-level species lists.
+- `assets/species_list/`: TaxonoPy-passed species lists for BioCLIP 2 label sets.
 - `assets/test_labels/`: subplot-level label files used for image
   benchmarking.
 
@@ -33,27 +33,22 @@ BioCLIP 2 grid predictions. The workflow is:
 
 TaxonoPy uses GNVerifier for name resolution. Install `taxonopy` from
 `requirements.txt`, then make sure a `gnverifier` executable is available.
-This repo expects a local copy at:
 
-```text
-outputs/tools/gnverifier/bin/gnverifier
-```
-
+You can find different versions of gnverifier from the [GitHub release](https://github.com/gnames/gnverifier/releases).
 On macOS ARM64, download and extract the GNVerifier release:
 
 ```bash
-mkdir -p outputs/tools/gnverifier/bin \
-  outputs/tools/gnverifier/downloads
+mkdir -p outputs/tools/gnverifier/
 
 curl -L \
-  -o outputs/tools/gnverifier/downloads/gnverifier-v1.3.7-mac-arm64.tar.gz \
+  -o outputs/tools/gnverifier/gnverifier-v1.3.7-mac-arm64.tar.gz \
   https://github.com/gnames/gnverifier/releases/download/v1.3.7/gnverifier-v1.3.7-mac-arm64.tar.gz
 
-tar -xzf outputs/tools/gnverifier/downloads/gnverifier-v1.3.7-mac-arm64.tar.gz \
-  -C outputs/tools/gnverifier/bin \
+tar -xzf outputs/tools/gnverifier/gnverifier-v1.3.7-mac-arm64.tar.gz \
+  -C outputs/tools/gnverifier \
   --strip-components 1
 
-chmod +x outputs/tools/gnverifier/bin/gnverifier
+chmod +x outputs/tools/gnverifier/gnverifier
 ```
 
 The species-list scripts prepend that directory to `PATH` automatically and
@@ -71,45 +66,23 @@ runs TaxonoPy, and writes only the final resolved list to
 Example for one SCBI plot:
 
 ```bash
-python scripts/create_taxonopy_species_list.py \
+python scripts/create_taxonopy_neon_plot_species_list.py \
   --source-csv assets/NEON_plotData.csv \
   --plot-id SCBI_008 \
-  --name SCBI_008 \
-  --full-rerun
+  --name SCBI_008
 ```
 
-This writes intermediate files to:
-
-```text
-outputs/species_list/SCBI_008/
-```
-
-and the final label file to:
-
-```text
-assets/species_list/SCBI_008_labels.csv
-```
-
-Create separate species lists for each benchmark plot:
+To create a merged species list for multiple plots:
 
 ```bash
-python scripts/create_taxonopy_species_list.py \
+python scripts/create_taxonopy_neon_plot_species_list.py \
   --source-csv assets/NEON_plotData.csv \
-  --plot-id SCBI_015 \
-  --name SCBI_015 \
-  --full-rerun
+  --plot-id SCBI_005 --plot-id SCBI_008 --plot-id SCBI_015 --plot-id SCBI_021 \
+  --name SCBI_plot
 ```
 
-If a broader TaxonoPy-passed species list already exists, split it into
-plot-specific lists by lookup instead of rerunning TaxonoPy:
-
-```bash
-python scripts/create_taxonopy_species_list.py \
-  --source-csv assets/NEON_plotData.csv \
-  --plot-id SCBI_015 \
-  --name SCBI_015 \
-  --resolved-species-list assets/species_list/virginia_conus_labels.csv
-```
+This writes intermediate files to `outputs/species_list/SCBI_plot/`
+and the final label file to `assets/species_list/SCBI_plot_labels.csv`.
 
 For a single state from the CONUS accepted plant list, use
 `scripts/create_taxonopy_conus_species_list.py`:
@@ -118,13 +91,26 @@ For a single state from the CONUS accepted plant list, use
 python scripts/create_taxonopy_conus_species_list.py \
   --source-csv assets/conus_plant_lists_accepted.csv \
   --state Colorado \
-  --name colorado_conus \
-  --full-rerun
+  --name colorado_conus
 ```
 
 This writes the intermediate state species CSV to
 `outputs/species_list/colorado_conus/` and the final resolved list to
 `assets/species_list/colorado_conus_labels.csv`.
+
+For other plant lists without the need to filter states, use
+`scripts/create_taxonopy_other_species_list.py`:
+
+```bash
+python scripts/create_taxonopy_other_species_list.py \
+  --source-csv assets/CPER_BONAPlist.csv \
+  --column scientificName \
+  --name CPER_BONAPlist
+```
+
+This writes the intermediate state species CSV to
+`outputs/species_list/CPER_BONAPlist/` and the final resolved list to
+`assets/species_list/CPER_BONAPlist_labels.csv`.
 
 ### Create Test Label Files
 
@@ -139,7 +125,7 @@ python scripts/map_labels_from_resolved_species_list.py \
 ```
 
 By default this reads `assets/NEON_plotData.csv`, looks up labels in
-`assets/species_list/<plot_id>_labels.csv`, and writes
+`assets/species_list/<plot_name>_plot_labels.csv`, and writes
 `assets/test_labels/<plot_id>_subplot_labels.csv`. The output has one row per
 subplot, with original NEON labels, resolved BioCLIP labels, resolved
 scientific names, TaxonoPy taxonomy strings, TaxonoPy resolution statuses, and
