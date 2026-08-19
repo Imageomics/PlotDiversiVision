@@ -165,5 +165,5 @@ for (i in 2:dim(temp)[[1]]){
 
 predAndTrue<-rbind(trueOnly, predOnly)
 #rename columns
-names(predAndTrue)<-c("plotID","subplotID","cnt", "species")
+names(predAndTrue)<-c("plotID","subplotID","cnt", "species", "source")
 predAndTrue
