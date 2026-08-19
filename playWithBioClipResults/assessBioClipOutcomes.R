@@ -8,7 +8,10 @@ library(tm)
 #**** CHANGE FILE NAMES
 #**filename for predictions
 #filePred<-"CPER_009_neon_grid3.csv"
-filePred<-"SCBI_005_neon_grid3.csv"
+#filePred<-"SCBI_005_neon_grid3.csv"
+filePred<-"SCBI_005_neon_grid2.csv"
+filePred<-"SCBI_005_neon_grid4.csv"
+
 
 
 #**filename for species labels
@@ -95,7 +98,6 @@ nameAboveThreshPerSubplot<-function(predSubPlot, labs,t=0.05){
 predList<-split(pred, f=pred$subplot_id)
 predSpec<-lapply(predList,nameAboveThreshPerSubplot, names(pred)[-metaCols], t=.1)
 #*2. For all subplot, cmpare predicted species to true species
-
 sens<- unique(gt2[,1:3])
 sens$predCnt<-NA
 sens$tpCnt<-NA
@@ -130,3 +132,38 @@ plot(sens2$fnr, sens2$tpr, xlab="fnr", ylab="tpr", main=sens$plotID[1])
 plot(sens2$predCnt, sens2$trueCnt, xlab="# Predicted", ylab="True #", main=sens$plotID[1])
 abline(a=0,b=1)
 
+
+#*** create a tall, skinny data frame that includes true with predicted species and adds column
+
+#*** ASSUMED FIRST subplotID in truth IS predicted by bioclip!!!
+
+#Reformat predSpec
+temp<- unique(gt2[,1:3])
+
+#create data for first row in gt (this is why make above assumption)
+predOnly<-cbind(plotID=temp$plotID[1], subplotID=temp$subplotID[1], 
+                trueCnt=length(predSpec[[1]]), 
+                trueSpecies=predSpec[[1]], source="pred")
+trueOnly<-cbind(gt2[gt2$subplotID==gt2$subplotID[1],], source="true")
+
+
+for (i in 2:dim(temp)[[1]]){
+  if (temp$subplotID[i] %in% names(predSpec)){
+    #pull from gt2
+    trueOnly<-as.data.frame(rbind(trueOnly,
+                                  cbind(gt2[gt2$subplotID==temp$subplotID[i],], source="true")))
+    
+    #predicted
+    predSpecSubPL<-predSpec[[which(names(predSpec)==sens$subplotID[i])]]
+  
+    predOnly<-as.data.frame(rbind(predOnly,cbind(plotID=temp$plotID[i], 
+                                                 subplotID=temp$subplotID[i], 
+                                                 trueCnt=length(predSpecSubPL), 
+                                                 trueSpecies=predSpecSubPL, source="pred")))
+  }
+}
+
+predAndTrue<-rbind(trueOnly, predOnly)
+#rename columns
+names(predAndTrue)<-c("plotID","subplotID","cnt", "species")
+predAndTrue
