@@ -91,12 +91,12 @@ For a single state from the CONUS accepted plant list, use
 python scripts/create_taxonopy_conus_species_list.py \
   --source-csv assets/conus_plant_lists_accepted.csv \
   --state Colorado \
-  --name colorado_conus
+  --name CPER_state
 ```
 
 This writes the intermediate state species CSV to
-`outputs/species_list/colorado_conus/` and the final resolved list to
-`assets/species_list/colorado_conus_labels.csv`.
+`outputs/species_list/CPER_state/` and the final resolved list to
+`assets/species_list/CPER_state_labels.csv`.
 
 For other plant lists without the need to filter states, use
 `scripts/create_taxonopy_other_species_list.py`:
@@ -169,6 +169,26 @@ Probability column names come from the species list's `resolved_labels` column;
 if that column is unavailable, the selected inference label column is used. The
 year remains available as parsed metadata, but it is not a required filtering
 layer.
+
+### Project Predictions Onto Original Images
+
+Use `scripts/project_grid_predictions.py` to create a PNG for each original
+image represented by a prediction CSV. The figure keeps the source image's
+native pixel dimensions, draws the grid boundaries, and annotates each grid
+cell with every species and its probability when the probability is greater
+than `0.1`.
+
+```bash
+python scripts/project_grid_predictions.py \
+  --predictions temp_results \
+  --output-dir temp_results/projected_figures \
+  --threshold 0.1
+```
+
+The output directory mirrors the prediction CSV directory structure, preventing
+files generated with different species lists or grid sizes from overwriting one
+another. Source images are resolved first from `image_path`, then from
+`relative_image_path` under `--data-root` (which defaults to `data`).
 
 ## About the Guide
 
