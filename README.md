@@ -1,7 +1,6 @@
 # PlotDiversiVision
 
-This purpose of this repo is to play with ideas to automate measures of plant diversity in images.  This repo includes code to 1) call a foundational model BioCLIP 2 to identify potential species with measure of probability, 2) process the  BioCLIP 2 results to create a 
-structured dataset of species predictions and 3) assess quality of predictions.
+This purpose of this repo is to play with ideas to automate measures of plant diversity in images.  This repo includes code to 1) call a foundational model BioCLIP 2 to identify potential species with measure of probability, 2) process the  BioCLIP 2 results to create a structured dataset of species predictions and 3) assess quality of predictions.
 
 ## Run BioCLIP 2
 
