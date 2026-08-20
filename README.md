@@ -1,14 +1,12 @@
-##
-#Phylo script description
-#Phylo script is to be run after 'PlaywithBioClip' script where data variables are put into format which feeds species
-#labels into a df ready to be run through 'UPhyloMaker2' which is a rooted tree wrapper that gives a rough approximate of species
-#phylogeny based on global vascular species models
+# PlotDiversiVision
 
+## Phylo Script Description
 
+Phylo script is to be run after 'PlaywithBioClip' script where data variables are put into format which feeds species labels into a df ready to be run through 'UPhyloMaker2' which is a rooted tree wrapper that gives a rough approximate of species phylogeny based on global vascular species models.
 
 ## Plant Species Label Workflow
 
-This repository includes scripts for preparing plant species labels and running
+## This repository includes scripts for preparing plant species labels and running
 BioCLIP 2 grid predictions. The workflow is:
 
 1. Create TaxonoPy-passed species lists for NEON plots to get ground-truth
@@ -191,10 +189,10 @@ files generated with different species lists or grid sizes from overwriting one
 another. Source images are resolved first from `image_path`, then from
 `relative_image_path` under `--data-root` (which defaults to `data`).
 
-
-
-
+files generated with different species lists or grid sizes from overwriting one
+another. Source images are resolved first from `image_path`, then from
+`relative_image_path` under `--data-root` (which defaults to `data`).
 
 ### Funding
 
-This work was supported by both the [Imageomics Institute](https://imageomics.org) and the [AI and Biodiversity Change (ABC) Global Center](http://abcresearchcenter.org). The Imageomics Institute is funded by the US National Science Foundation's Harnessing the Data Revolution (HDR) program under [Award #2118240](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2118240) (Imageomics: A New Frontier of Biological Information Powered by Knowledge-Guided Machine Learning). The ABC Global Center is funded by the US National Science Foundation under [Award No. 2330423](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2330423&HistoricalAwards=false) and Natural Sciences and Engineering Research Council of Canada under [Award No. 585136](https://www.nserc-crsng.gc.ca/ase-oro/Details-Detailles_eng.asp?id=782440). This guide draws on research supported by the Social Sciences and Humanities Research Council. Any opinions, findings and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation, Natural Sciences and Engineering Research Council of Canada, or Social Sciences and Humanities Research Council.
+## This work was supported by both the [Imageomics Institute](https://imageomics.org) and the [AI and Biodiversity Change (ABC) Global Center](http://abcresearchcenter.org).
