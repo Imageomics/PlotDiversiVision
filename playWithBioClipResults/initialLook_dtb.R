@@ -25,6 +25,20 @@ results %>%
             nPredZero = sum(predCnt == 0),
             .groups = 'drop')
 
+#1b. grid conversion
+gridOrder <- sort(unique(results$grid))
+gridOrder
+
+results <- results %>%
+  mutate(nTile = grid ^ 2)
+
+tileOrder <- sort(unique(results$nTile))
+tileOrder
+
+results <- results %>%
+  mutate(tileF = factor(nTile, levels = tileOrder))
+
+table(results$site, results$tileF)
 
 #2. Macro summary, mean of per-subplot rates
 macro <- results %>%
@@ -84,29 +98,91 @@ paired %>%
             meanDeltaFdr = mean(deltaFdr, na.rm = TRUE),
             .groups = 'drop')
 
-#5. Distribution shape
+
+labelOrder <- c('neon', 'gbif', 'bonap', 'state')
+
+# confirm the vector matches the values actually present
+setdiff(unique(results$labels), labelOrder)
+setdiff(labelOrder, unique(results$labels))
+
+results <- results %>%
+  mutate(labels = factor(labels, levels = labelOrder))
+
+levels(results$labels)
+
+####species list constraint figures 
+#true positive rate
 ggplot(results, aes(x = labels, y = tpr, fill = labels)) +
   geom_boxplot(alpha = 0.7, outlier.size = 0.6) +
   facet_wrap(~ site) +
-  labs(x = 'label constraint', y = 'true positive rate') +
+  scale_fill_brewer(palette = 'YlGnBu') +
+  labs(x = 'possible species list constraint', y = 'true positive rate') +
   theme_bw() +
   theme(legend.position = 'none',
         axis.text.x = element_text(angle = 45, hjust = 1))
 
+#false discovery rate
 ggplot(results, aes(x = labels, y = fdr, fill = labels)) +
   geom_boxplot(alpha = 0.7, outlier.size = 0.6) +
   facet_wrap(~ site) +
-  labs(x = 'label constraint', y = 'false discovery rate') +
+  scale_fill_brewer(palette = 'YlGnBu') +
+  labs(x = 'possible species list constraint', y = 'false discovery rate') +
   theme_bw() +
   theme(legend.position = 'none',
         axis.text.x = element_text(angle = 45, hjust = 1))
 
-#6. Richness calibration check
-ggplot(results, aes(x = trueCnt, y = predCnt, color = labels)) +
-  geom_abline(slope = 1, intercept = 0, linetype = 'dashed') +
-  geom_jitter(width = 0.2, height = 0.2, alpha = 0.5, size = 1) +
-  facet_wrap(~ site) +
+#richness obs vs predicted
+ggplot(results, aes(x = trueCnt, y = predCnt)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 'dashed', color = 'grey40') +
+  geom_jitter(width = 0.2, height = 0.2, alpha = 0.4, size = 1, color = 'steelblue') +
+  geom_smooth(method = 'lm', se = FALSE, color = 'firebrick', linewidth = 0.6) +
+  facet_grid(labels ~ site) +
   labs(x = 'observed richness', y = 'predicted richness') +
   theme_bw()
 
+
+##what showing
+
+calib <- results %>%
+  group_by(site, labels) %>%
+  summarise(nSubplot = n(),
+            meanTrue = mean(trueCnt),
+            meanPred = mean(predCnt),
+            bias = mean(predCnt - trueCnt),
+            sdPred = sd(predCnt),
+            corr = cor(trueCnt, predCnt),
+            slope = coef(lm(predCnt ~ trueCnt))[2],
+            intercept = coef(lm(predCnt ~ trueCnt))[1],
+            .groups = 'drop')
+
+calib
+
+
+####grid numbers
+#true positive rate
+ggplot(results, aes(x = tileF, y = tpr, fill = tileF)) +
+  geom_boxplot(alpha = 0.7, outlier.size = 0.6) +
+  facet_wrap(~ site) +
+  scale_fill_brewer(palette = 'OrRd') +
+  labs(x = 'tiles per subplot image', y = 'true positive rate') +
+  theme_bw() +
+  theme(legend.position = 'none')
+
+#false discovery rate
+ggplot(results, aes(x = tileF, y = fdr, fill = tileF)) +
+  geom_boxplot(alpha = 0.7, outlier.size = 0.6) +
+  facet_wrap(~ site) +
+  scale_fill_brewer(palette = 'OrRd') +
+  labs(x = 'tiles per subplot image', y = 'false discovery rate') +
+  theme_bw() +
+  theme(legend.position = 'none')
+
+#richness obs vs predicted
+ggplot(results, aes(x = trueCnt, y = predCnt)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 'dashed', color = 'grey40') +
+  geom_jitter(width = 0.2, height = 0.2, alpha = 0.4, size = 1, color = 'chocolate3') +
+  geom_smooth(method = 'lm', se = FALSE, color = 'darkslateblue', linewidth = 0.6) +
+  facet_grid(tileF ~ site) +
+  labs(x = 'observed richness', y = 'predicted richness') +
+  theme_bw()
 
