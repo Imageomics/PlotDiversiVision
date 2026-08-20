@@ -194,7 +194,7 @@ another. Source images are resolved first from `image_path`, then from
 
 ## Process BioCLIP 2 Results
 
-## Phylo Script Description
+## Assess BioCLIP 2 Results: Phylo Script Description
 
 Phylo script is to be run after 'PlaywithBioClip' script where data variables are put into format which feeds species labels into a df ready to be run through 'UPhyloMaker2' which is a rooted tree wrapper that gives a rough approximate of species phylogeny based on global vascular species models.
 
