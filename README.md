@@ -192,11 +192,15 @@ another. Source images are resolved first from `image_path`, then from
 `relative_image_path` under `--data-root` (which defaults to `data`).
 
 ## Process BioCLIP 2 Results
+Outcomes from Bioclip 2 include 4-16 probabilities per species considered for each image.  The number of probabilities depends on the chose grid size to analyze each image and the number of species depends on the list of possible labeks to be considered.  Scripts in R were written to import the probabilities and possible species-labels to generate predictions of specific species names in each image.    Also, ground truth data are imported to a) calculate true positive, true negative, false positive, false negative, and false discover rates.  The R scripts are stored in the folder playWithBioClipResults.
+
+
+
+
 
 ## Assess BioCLIP 2 Results: Phylo Script Description
 
 Phylo script is to be run after 'PlaywithBioClip' script where data variables are put into format which feeds species labels into a df ready to be run through 'UPhyloMaker2' which is a rooted tree wrapper that gives a rough approximate of species phylogeny based on global vascular species models.
-
 
 ### Funding
 
