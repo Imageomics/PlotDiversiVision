@@ -1,6 +1,8 @@
 # PlotDiversiVision
 
-This purpose of this repo is to play with ideas to automate measures of plant diversity in images.  This repo includes code to 1) call a foundational model BioCLIP 2 to identify potential species with measure of probability, 2) process the  BioCLIP 2 results to create a structured dataset of species predictions and 3) assess quality of predictions.
+This purpose of this repo is to play with ideas to automate measures of plant diversity in images.  The images may be found here: https://huggingface.co/datasets/imageomics/NEON-plant-subplot-pilot.  These are images taken from two sites and several plots within the sites.  Species identified in these images are provided in this repo. 
+
+This repo includes code to 1) call a foundational model BioCLIP 2 to determine probabilities of species appearing in eachimage, 2) process the  BioCLIP 2 results to create a structured dataset of specific species predictions and 3) assess quality of predictions.
 
 ## Run BioCLIP 2
 
