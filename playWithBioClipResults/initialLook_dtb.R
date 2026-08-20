@@ -1,9 +1,36 @@
+#############################################################################################
+#' @title create result figures of initial bioclip results
+#'
+#' @author
+#' Dave T Barnett \email{dbarnettl@battelleecology.org} \cr
+#'
+#' @description creates figures of initial results by pulling in results summary file 
+#'
+#' @import dplyr ggplot2
+#'
+#' @param 
+#'
+#' @return Script returns figures of results, 3 for the species list constraints, 3 for the grid size
+#'
+#' @references
+#' License: GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
+#'
+#' @export
+#'
+#' @examples
+#' 
+
+
+
+# changelog and author contributions / copyrights
+#   Dave T Barnett (2026-08-20)
+#     original creation
+##############################################################################################
+
 
 rm(list = ls())
 
-library(plyr)
 library(dplyr)
-library(stringr)
 library(ggplot2)
 
 results <- read.csv('C:/Users/dbarnett/Documents/GitHub/PlotDiversiVision/playWithBioClipResults/tprFpr.csv', stringsAsFactors = FALSE)
