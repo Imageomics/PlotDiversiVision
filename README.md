@@ -1,7 +1,6 @@
 # PlotDiversiVision
 
-This purpose of this repo is to play with ideas to automate measures of plant diversity in images.  This repo includes code to 1) call a foundational model BioCLIP 2 to identify potential species with measure of probability, 2) process the  BioCLIP 2 results to create a 
-structured dataset of species predictions and 3) assess quality of predictions.
+This purpose of this repo is to play with ideas to automate measures of plant diversity in images.  This repo includes code to 1) call a foundational model BioCLIP 2 to identify potential species with measure of probability, 2) process the  BioCLIP 2 results to create a structured dataset of species predictions and 3) assess quality of predictions.
 
 ## Run BioCLIP 2
 
@@ -194,11 +193,10 @@ another. Source images are resolved first from `image_path`, then from
 
 ## Process BioCLIP 2 Results
 
-## Phylo Script Description
+## Assess BioCLIP 2 Results: Phylo Script Description
 
 Phylo script is to be run after 'PlaywithBioClip' script where data variables are put into format which feeds species labels into a df ready to be run through 'UPhyloMaker2' which is a rooted tree wrapper that gives a rough approximate of species phylogeny based on global vascular species models.
 
-## Plant Species Label Workflow
 
 ### Funding
 
