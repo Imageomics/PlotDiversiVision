@@ -6,7 +6,7 @@ Phylo script is to be run after 'PlaywithBioClip' script where data variables ar
 
 ## Plant Species Label Workflow
 
-## This repository includes scripts for preparing plant species labels and running
+This repository includes scripts for preparing plant species labels and running
 BioCLIP 2 grid predictions. The workflow is:
 
 1. Create TaxonoPy-passed species lists for NEON plots to get ground-truth
