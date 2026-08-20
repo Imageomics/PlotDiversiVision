@@ -124,7 +124,7 @@ nodelabels(round(branching.times(result_tree$scenario.2), 1), cex = 1)
 
 plot.phylo(result_tree$scenario.3, cex = 1.5, main = "scenario.3")
 
-nodelabels(round(branching.times(result_tree$scenario.3), 1), cex = 1)
+nodelabels(round(branching.times(tree), 1), cex = 1)
 #plot
 
 plot.phylo(
@@ -142,3 +142,115 @@ axisPhylo(side = 1, cex.axis = 0.8)
 mtext("Time (Ma before present)", side = 1, line = 2.5, cex = 0.9)
 title("Time-Dated Phylogenetic Tree\n(V.PhyloMaker2, S3)")
 
+tree<- read.tree("C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/assets/PlotVision_tree.tre")
+
+pdist<-cophenetic(tree)
+
+#############Begin recovered script
+
+## ============================================================
+## RECOVERED SCRIPT
+## Reconstructed from R console history after accidental
+## git-pull overwrite. Dead-end attempts, typos, and repeated
+## re-definitions from the trace have been removed/consolidated.
+## Please review before re-running -- a few ambiguous spots are
+## flagged with comments below.
+## ============================================================
+
+library(ape)
+library(ggplot2)
+library(tidyr)
+
+## ------------------------------------------------------------
+## 1. Load tree & basic diagnostics
+## ------------------------------------------------------------
+tree <- read.tree("C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/assets/PlotVision_tree.tre")
+
+distance_matrix <- cophenetic(tree)
+## ------------------------------------------------------------
+## 2. Plot the time-dated phylogeny
+## ------------------------------------------------------------
+plot.phylo(
+  tree,
+  type           = "phylogram",
+  show.tip.label = TRUE,
+  tip.color      = "black",
+  cex            = 0.80,
+  no.margin      = TRUE,
+  edge.width     = 1.5
+)
+
+# Geological time axis -- branch lengths are in millions of years (Ma)
+axisPhylo(side = 1, cex.axis = 0.8)
+mtext("Time (Ma before present)", side = 1, line = 2.5, cex = 0.9)
+title("Time-Dated Phylogenetic Tree\n(V.PhyloMaker2, S3)")
+
+# NOTE: original trace referenced `result_tree$scenario.3`, which was
+# never defined in this session (threw "object 'result_tree' not found").
+# The working fallback used in the trace was simply:
+nodelabels(round(branching.times(tree), 1), cex = 1)
+
+## ------------------------------------------------------------
+## 3. Build long-format cophenetic distance data for heatmap
+## ------------------------------------------------------------
+Pdist_mat <- cophenetic(tree)
+
+Pdist_df <- as.data.frame(Pdist_mat)
+Pdist_df$sp1 <- gsub("_", " ", rownames(Pdist_mat))
+
+Pdist_long <- tidyr::pivot_longer(
+  Pdist_df,
+  cols      = -sp1,
+  names_to  = "sp2",
+  values_to = "dist"
+)
+Pdist_long$sp2 <- gsub("_", " ", Pdist_long$sp2)
+
+# Order species by hierarchical clustering for a nicer heatmap layout
+sp_clust  <- hclust(as.dist(Pdist_mat))$order
+sp_levels <- gsub("_", " ", rownames(Pdist_mat)[sp_clust])
+Pdist_long$sp1 <- factor(Pdist_long$sp1, levels = sp_levels)
+Pdist_long$sp2 <- factor(Pdist_long$sp2, levels = sp_levels)
+
+## ------------------------------------------------------------
+## 4. Custom theme
+## ------------------------------------------------------------
+theme_adm <- function() {
+  theme_bw(base_size = 11) +
+    theme(
+      plot.title       = element_text(face = "bold", size = 12),
+      plot.subtitle    = element_text(size = 9, color = "grey40"),
+      axis.title       = element_text(size = 10),
+      axis.text        = element_text(size = 9),
+      legend.title     = element_text(size = 9),
+      legend.text      = element_text(size = 8),
+      panel.grid.minor = element_blank()
+    )
+}
+
+## ------------------------------------------------------------
+## 5. Heatmap of pairwise phylogenetic (cophenetic) distance
+## ------------------------------------------------------------
+
+p2 <- ggplot(Pdist_long, aes(x = sp1, y = sp2, fill = dist)) +
+  geom_tile() +
+  scale_fill_gradientn(colors = c("white", "#FDE68A", "#F97316", "#7C2D12"),
+                       name = "dist") +
+  labs(title    = "Phylogenetic Distance",
+       subtitle = "Based on UPhyloMaker2",
+       x = NULL, y = NULL) +
+  theme_adm() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, face = "italic", size = 7),
+        axis.text.y = element_text(face = "italic", size = 7),
+        panel.grid  = element_blank())
+
+print(p2)
+
+## ------------------------------------------------------------
+## 6. Quick exploratory checks
+## ------------------------------------------------------------
+hist(Pdist_long$dist)
+plot(Pdist_long$sp1, Pdist_long$dist)
+
+# tprfpr <- read.csv("C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/playWithBioClipResults/tprFpr.csv")
+# View(tprfpr)
