@@ -57,7 +57,7 @@ and avoids permission issues in sandboxed runs.
 
 ### Create Resolved Species Lists
 
-Use `scripts/create_taxonopy_species_list.py` when starting from
+Use `scripts/create_taxonopy_neon_species_list.py` when starting from
 `assets/NEON_plotData.csv`. It extracts unique species labels for a plot,
 runs TaxonoPy, and writes only the final resolved list to
 `assets/species_list/`.
@@ -124,7 +124,7 @@ python scripts/map_labels_from_resolved_species_list.py \
 ```
 
 By default this reads `assets/NEON_plotData.csv`, looks up labels in
-`assets/species_list/<plot_name>_plot_labels.csv`, and writes
+`assets/species_list/<site_name>_plot_labels.csv`, and writes
 `assets/test_labels/<plot_id>_subplot_labels.csv`. The output has one row per
 subplot, with original NEON labels, resolved BioCLIP labels, resolved
 scientific names, TaxonoPy taxonomy strings, TaxonoPy resolution statuses, and
@@ -148,7 +148,7 @@ python scripts/predict_grid_species.py \
 ```
 
 When `--species-list` is omitted, the script infers the site-level label set
-from the matched images, for example `assets/species_list/SCBI_labels.csv` for
+from the matched images, for example `assets/species_list/SCBI_NEON_labels.csv` for
 SCBI plots and `assets/species_list/CPER_labels.csv` for CPER plots. Pass
 `--species-list` explicitly only when you want to override that behavior with a
 plot-specific or custom label set. The script can also be pointed at explicit
@@ -189,12 +189,8 @@ files generated with different species lists or grid sizes from overwriting one
 another. Source images are resolved first from `image_path`, then from
 `relative_image_path` under `--data-root` (which defaults to `data`).
 
-files generated with different species lists or grid sizes from overwriting one
-another. Source images are resolved first from `image_path`, then from
-`relative_image_path` under `--data-root` (which defaults to `data`).
-
 ## Process BioCLIP 2 Results
-Outcomes from Bioclip 2 include 4-16 probabilities per species considered for each image.  The number of probabilities depends on the chose grid size to analyze each image and the number of species depends on the list of possible labels to be considered.  Scripts in R were written to transform matrices of probabilities to predictions of specific species names in each image.    Also, ground truth data are imported to a) calculate true positive, true negative, false positive, false negative, and false discover rates (aka success rates).  The R scripts are stored in the folder playWithBioClipResults.
+Outcomes from Bioclip 2 include one probability per grid crop per candidate species (4x4 = 16 corps). The number of probabilities depends on the chose grid size to analyze each image and the number of species depends on the list of possible labels to be considered.  Scripts in R were written to transform matrices of probabilities to predictions of specific species names in each image.    Also, ground truth data are imported to a) calculate true positive, true negative, false positive, false negative, and false discover rates (aka success rates).  The R scripts are stored in the folder playWithBioClipResults.
 
 ### Transform probabilities to species names and calculate success/failure rates
 
