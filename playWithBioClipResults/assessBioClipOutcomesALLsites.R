@@ -94,6 +94,10 @@ predTrueLabel[1:10,]
 #* ADD INDEX Column for processing Bioclip
 predTrueLabel$index<-1:dim(predTrueLabel)[[1]]
 
+#explort this file.
+#reorder
+predTrueLabel<-predTrueLabel[,c(8,4,7,6,1,3,2,5)]
+write.table(predTrueLabel, "filesForBioclipPredictions.csv", sep=",", col.names = TRUE, row.names = FALSE, quote=FALSE)
 
 
 #*****************************
@@ -161,18 +165,24 @@ processBioClip<-function(rowIndex){
 
   #*1. Function to list of  predicted species
   nameAboveThreshPerGrid<-function(probVec, labs,t=0.05){
+    #browser()
     return(labs[probVec>t])
   }
   nameAboveThreshPerSubplot<-function(predSubPlot, labs,t=0.05){
     probMatrix<-predSubPlot[,-metaCols]
+    #print(dim(probMatrix))
     out<-apply(probMatrix,1,nameAboveThreshPerGrid,labs, t)
+    #browser()
     return(unique(unlist(out)))
   }
-  #check functions
-  #spId<-"31_1_1"
+  ##check functions
+  #spId<-"41_1_4"
+  #spId<-"41_1_1"
+  #spId<-"41_1_3"
   #nameAboveThreshPerGrid(probVec=pred[1,-metaCols], names(pred)[-metaCols], t=.1)
   #nameAboveThreshPerSubplot(predSubPlot=pred[pred$subplot_id==spId,], labs=names(pred)[-metaCols], t=.1)
 
+  #browser()
   #*1. For all subplots, list predictd species
   predList<-split(pred, f=pred$subplot_id)
   predSpec<-lapply(predList,nameAboveThreshPerSubplot, names(pred)[-metaCols], t=.1)
@@ -206,16 +216,90 @@ processBioClip<-function(rowIndex){
   sens2$labels<-predTrueLabel$labels[rowIndex]
   sens2$grid<-predTrueLabel$grid[rowIndex]
 
-  return(sens2)
+  #*** create a tall, skinny data frame that includes true with predicted species and adds column
+  #*** ASSUMED FIRST subplotID in truth IS predicted by bioclip!!!
+  
+  #Reformat predSpec
+  temp<- unique(gt2[,1:3])
+  
+  #create data for first row in gt (this is why make above assumption)
+  predOnly<-cbind(plotID=temp$plotID[1], subplotID=temp$subplotID[1], 
+                  trueCnt=length(predSpec[[1]]), 
+                  trueSpecies=predSpec[[1]], source="pred")
+  trueOnly<-cbind(gt2[gt2$subplotID==gt2$subplotID[1],], source="true")
+  
+  
+  for (i in 2:dim(temp)[[1]]){
+    
+    #print(i)
+    #if (i==16) {browser()}
+    if (temp$subplotID[i] %in% names(predSpec)){
+      #pull from gt2
+      trueOnly<-as.data.frame(rbind(trueOnly,
+                                    cbind(gt2[gt2$subplotID==temp$subplotID[i],], source="true")))
+      
+      #predicted
+      predSpecSubPL<-predSpec[[which(names(predSpec)==sens$subplotID[i])]]
+      
+      predOnly<-as.data.frame(rbind(predOnly,cbind(plotID=temp$plotID[i], 
+                                                   subplotID=temp$subplotID[i], 
+                                                   trueCnt=length(predSpecSubPL), 
+                                                   trueSpecies=predSpecSubPL, source="pred")))
+    }
+  }
+  
+  predAndTrue<-rbind(trueOnly, predOnly)
+  #rename columns
+  names(predAndTrue)<-c("plotID","subplotID","cnt", "species", "source")
+  predAndTrue
+  
+
+  return(list(sens2=sens2, predAndTrue=predAndTrue))
 }
 
-allSens<-processBioClip(1)
-for (k in 2:dim(predTrueLabel)[[1]]){
-#for (k in 2:10){
+
+temp<-processBioClip(1) #works
+
+#There is a bug in the code for indices 28,41,63,
+predTrueLabel[c(28,41,63),]
+#temp<-processBioClip(63) #there is a bug in the code to create predAndTrue
+#temp<-processBioClip(41) #there is a bug in the code to create predAndTrue
+#temp<-processBioClip(28) #there is a bug in the code to create predAndTrue
+
+
+#Combine all results for all bioclip runs, except 3
+allSens<-temp$sens2
+allPredAndTrue<-temp$predAndTrue
+
+#for (k in 2:dim(predTrueLabel)[[1]]){
+for (k in c(2:27,29:40, 42:62, 64:84)){
+    print(k)
     temp<-processBioClip(k)
-  allSens<-rbind(allSens, temp)
+    oneSens<-temp$sens2
+    onePT<-temp$predAndTrue
+    allSens<-rbind(allSens, oneSens)
+    allPredAndTrue<-rbind(allPredAndTrue, onePT)
 }
 
 
-write.table(allSens, "tprFpr.csv", sep=",", col.names=TRUE, row.names=FALSE, quote=FALSE)
+#write.table(allSens, "tprFpr.csv", sep=",", col.names=TRUE, row.names=FALSE, quote=FALSE)
+#write.table(allPredAndTrue, "allPredAndTrue_except3.csv", sep=",", col.names=TRUE, row.names=FALSE, quote=FALSE)
+
+#explore the allSens
+head(allSens)
+head(allPredAndTrue)
+dim(allPredAndTrue)
+
+hist(allSens$tpr)
+hist(allSens$fdr)
+
+boxplot(tpr~grid, data=allSens)
+boxplot(tpr~labels, data=allSens)
+boxplot(tpr~site, data=allSens)
+
+boxplot(fdr~grid, data=allSens)
+boxplot(fdr~labels, data=allSens)
+
+allSens[allSens$tpr==1,]
+
 
