@@ -192,13 +192,20 @@ another. Source images are resolved first from `image_path`, then from
 `relative_image_path` under `--data-root` (which defaults to `data`).
 
 ## Process BioCLIP 2 Results
-Outcomes from Bioclip 2 include 4-16 probabilities per species considered for each image.  The number of probabilities depends on the chose grid size to analyze each image and the number of species depends on the list of possible labeks to be considered.  Scripts in R were written to import the probabilities and possible species-labels to generate predictions of specific species names in each image.    Also, ground truth data are imported to a) calculate true positive, true negative, false positive, false negative, and false discover rates.  The R scripts are stored in the folder playWithBioClipResults.
+Outcomes from Bioclip 2 include 4-16 probabilities per species considered for each image.  The number of probabilities depends on the chose grid size to analyze each image and the number of species depends on the list of possible labels to be considered.  Scripts in R were written to transform matrices of probabilities to predictions of specific species names in each image.    Also, ground truth data are imported to a) calculate true positive, true negative, false positive, false negative, and false discover rates (aka success rates).  The R scripts are stored in the folder playWithBioClipResults.
 
+### Transform probabilities to species names and calculate success/failure rates
 
+The  script, accessBioClipOutcomes.R,  transforms probabilities to a predicted species list and calculates success rates for images at one site,  subplot, with a grid specification, and labels file.  The  script, accessBioClipOutcomesALLsite.R,  does the same for all sites and all conditions on which BioCLIP 2 was run.  In turn, the following files are output from the code: tprFpr.csv and allPredAndTrue_except3.csv.  The file allPredAndTrue_except3.csv lists both predicted and ground truth species across all images considered, except for 3 bioclip runs.  There is a small bug in the code that causes it to fail.  
 
+To run the scripts, simply update the workspace and data pathnames for the required files. Requited files are found in assets/ and temp_results/, but listed explicitly in the file, filesForBioclipPredictions.csv.  For example, the first row of  filesForBioclipPredictions.csv provides the prediction file name, labels file name and file for ground truth to assess bioclip results from CPER_001_bonap_grid2.csv. 
 
+## Assess BioCLIP 2 Results: 
 
-## Assess BioCLIP 2 Results: Phylo Script Description
+### Graph BioCLIP species predictions. 
+The script in R, initialLook_dtb.R, creates graph to explore how well the current pipeline does relative to ground truth. 
+
+### Phylo Script Description
 
 Phylo script is to be run after 'PlaywithBioClip' script where data variables are put into format which feeds species labels into a df ready to be run through 'UPhyloMaker2' which is a rooted tree wrapper that gives a rough approximate of species phylogeny based on global vascular species models.
 
