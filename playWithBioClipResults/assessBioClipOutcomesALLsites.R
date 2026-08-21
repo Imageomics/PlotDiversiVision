@@ -7,7 +7,7 @@ library(tm)
 
 #*** This code 
 #*A) aligns all prediction filesnames, with label filenames, and ground truth filenames.
-#*B) Then, calculates  tpr       fnr         fpr       tnr fdr for ALL sites, subplots, grids, labels-ised, etc.
+#*B) Then, calculates  tpr,fnr,fpr,tnr,fdr for ALL sites, subplots, grids, labels-used, etc.
 
 
 #*************************
@@ -97,7 +97,7 @@ predTrueLabel$index<-1:dim(predTrueLabel)[[1]]
 #explort this file.
 #reorder
 predTrueLabel<-predTrueLabel[,c(8,4,7,6,1,3,2,5)]
-write.table(predTrueLabel, "filesForBioclipPredictions.csv", sep=",", col.names = TRUE, row.names = FALSE, quote=FALSE)
+#write.table(predTrueLabel, "filesForBioclipPredictions.csv", sep=",", col.names = TRUE, row.names = FALSE, quote=FALSE)
 
 
 #*****************************
@@ -105,7 +105,7 @@ write.table(predTrueLabel, "filesForBioclipPredictions.csv", sep=",", col.names 
 #*****************************
 
 processBioClip<-function(rowIndex){
-  #**predictions from BioClip
+  #** import predictions from BioClip
   filePred<-predTrueLabel$predFile[rowIndex]
   pathPred<-paste("../PlotDiversiVision/temp_results/", filePred, sep="")
   pred<-read.csv(pathPred, sep=",", header=TRUE)
@@ -117,7 +117,7 @@ processBioClip<-function(rowIndex){
   metaCols<-1:which(names(pred)=="species_count")
   probCols<-(which(names(pred)=="species_count")+1):dim(pred)[[2]]
 
-  #species labesl 
+  #** import species labels 
   filePredLabels<-predTrueLabel$predLabelsFile[rowIndex]
   pathPredLabels<-paste("../PlotDiversiVision/assets/species_list/", filePredLabels,sep="")
   labelPred<-read.csv(pathPredLabels, sep=",", header=TRUE)
@@ -126,7 +126,7 @@ processBioClip<-function(rowIndex){
   labs<-tolower(labelPred$resolved_labels)
   N<-length(labs) #number of species in the region
   
-  #**Ground truth; i.e., species listed by NEON technician
+  #**import Ground truth; i.e., species listed by NEON technician
   fileTrueLabels<-predTrueLabel$truthFile[rowIndex]
   pathTrueLabels<-paste("../PlotDiversiVision/assets/test_labels/", fileTrueLabels,sep="")
   gt<-read.csv(pathTrueLabels, sep=",", header=TRUE) #look at column: resolved_labels
@@ -142,12 +142,12 @@ processBioClip<-function(rowIndex){
   }
   sepTruths(gt$resolved_labels[1])
 
-  #create data for first row in gt
+  #** create data for first row in gt
   gt2<-cbind(plotID=gt$plotID[1], subplotID=gt$subplotID[1],  
              trueCnt=gt$label_count[1], 
              trueSpecies=sepTruths(gt$resolved_labels[1]))
 
-  #this can get more efficient
+  #Now add data for remaining rows in gt
   for (i in 2:dim(gt)[[1]]){
     gt2<-as.data.frame(rbind(gt2,cbind(plotID=gt$plotID[i], 
                    subplotID=gt$subplotID[i], 
@@ -165,24 +165,18 @@ processBioClip<-function(rowIndex){
 
   #*1. Function to list of  predicted species
   nameAboveThreshPerGrid<-function(probVec, labs,t=0.05){
-    #browser()
     return(labs[probVec>t])
   }
   nameAboveThreshPerSubplot<-function(predSubPlot, labs,t=0.05){
     probMatrix<-predSubPlot[,-metaCols]
-    #print(dim(probMatrix))
     out<-apply(probMatrix,1,nameAboveThreshPerGrid,labs, t)
-    #browser()
-    return(unique(unlist(out)))
+    return(unique(as.vector(unlist(out))))
   }
   ##check functions
-  #spId<-"41_1_4"
-  #spId<-"41_1_1"
-  #spId<-"41_1_3"
+  #spId<-"31_1_1"
   #nameAboveThreshPerGrid(probVec=pred[1,-metaCols], names(pred)[-metaCols], t=.1)
   #nameAboveThreshPerSubplot(predSubPlot=pred[pred$subplot_id==spId,], labs=names(pred)[-metaCols], t=.1)
 
-  #browser()
   #*1. For all subplots, list predictd species
   predList<-split(pred, f=pred$subplot_id)
   predSpec<-lapply(predList,nameAboveThreshPerSubplot, names(pred)[-metaCols], t=.1)
@@ -230,9 +224,6 @@ processBioClip<-function(rowIndex){
   
   
   for (i in 2:dim(temp)[[1]]){
-    
-    #print(i)
-    #if (i==16) {browser()}
     if (temp$subplotID[i] %in% names(predSpec)){
       #pull from gt2
       trueOnly<-as.data.frame(rbind(trueOnly,
@@ -240,7 +231,6 @@ processBioClip<-function(rowIndex){
       
       #predicted
       predSpecSubPL<-predSpec[[which(names(predSpec)==sens$subplotID[i])]]
-      
       predOnly<-as.data.frame(rbind(predOnly,cbind(plotID=temp$plotID[i], 
                                                    subplotID=temp$subplotID[i], 
                                                    trueCnt=length(predSpecSubPL), 
@@ -251,28 +241,25 @@ processBioClip<-function(rowIndex){
   predAndTrue<-rbind(trueOnly, predOnly)
   #rename columns
   names(predAndTrue)<-c("plotID","subplotID","cnt", "species", "source")
-  predAndTrue
   
-
   return(list(sens2=sens2, predAndTrue=predAndTrue))
 }
 
 
-temp<-processBioClip(1) #works
-
-#There is a bug in the code for indices 28,41,63,
-predTrueLabel[c(28,41,63),]
+#There WAS a bug in the code for indices 28,41,63.  NOW, all is ok
+#predTrueLabel[c(28,41,63),]
 #temp<-processBioClip(63) #there is a bug in the code to create predAndTrue
 #temp<-processBioClip(41) #there is a bug in the code to create predAndTrue
 #temp<-processBioClip(28) #there is a bug in the code to create predAndTrue
 
 
-#Combine all results for all bioclip runs, except 3
+#Assess predictions in row 1, of predTrueLabel. The, do all results for all bioclip predictions
+temp<-processBioClip(1) #works
 allSens<-temp$sens2
 allPredAndTrue<-temp$predAndTrue
 
-#for (k in 2:dim(predTrueLabel)[[1]]){
-for (k in c(2:27,29:40, 42:62, 64:84)){
+#for (k in c(2:27,29:40, 42:62, 64:84)){
+for (k in 2:dim(predTrueLabel)[[1]]){
     print(k)
     temp<-processBioClip(k)
     oneSens<-temp$sens2
@@ -281,9 +268,13 @@ for (k in c(2:27,29:40, 42:62, 64:84)){
     allPredAndTrue<-rbind(allPredAndTrue, onePT)
 }
 
-
+#export results
 #write.table(allSens, "tprFpr.csv", sep=",", col.names=TRUE, row.names=FALSE, quote=FALSE)
-#write.table(allPredAndTrue, "allPredAndTrue_except3.csv", sep=",", col.names=TRUE, row.names=FALSE, quote=FALSE)
+#write.table(allPredAndTrue, "allPredAndTrue.csv", sep=",", col.names=TRUE, row.names=FALSE, quote=FALSE)
+
+#check of exported correctly by importing
+#temp3<-read.csv("tprFpr.csv", header=TRUE)
+#temp4<-read.csv("allPredAndTrue.csv", header=TRUE)
 
 #explore the allSens
 head(allSens)

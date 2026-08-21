@@ -8,21 +8,21 @@ library(tm)
 #**** CHANGE FILE NAMES
 #**filename for predictions
 #filePred<-"CPER_009_neon_grid3.csv"
-#filePred<-"SCBI_005_neon_grid3.csv"
-filePred<-"SCBI_005_neon_grid2.csv"
-filePred<-"SCBI_005_neon_grid4.csv"
-
-
+filePred<-"CPER_001_state_grid2.csv" #A
+#filePred<-"SCBI_008_bonap_grid2.csv" #B
+#filePred<-"SCBI_008_neon_grid2.csv" #C
 
 #**filename for species labels
 #filePredLabels<-"CPER_NEON_labels.csv"
-filePredLabels<-"SCBI_plot_labels.csv"
+filePredLabels<-"CPER_state_labels.csv" #A
+#filePredLabels<-"SCBI_BONAPlist_labels.csv" #B
+#filePredLabels<-"SCBI_NEON_labels.csv" #C
 
 #**filename for ground truth
 #fileTrueLabels<-"CPER_009_subplot_labels.csv"
-fileTrueLabels<-"SCBI_005_subplot_labels.csv"
-
-
+fileTrueLabels<-"CPER_001_subplot_labels.csv" #A
+#fileTrueLabels<-"SCBI_008_subplot_labels.csv" #B
+#fileTrueLabels<-"SCBI_008_subplot_labels.csv" #c
 
 #**predictions from BioClip
 pathPred<-paste("../PlotDiversiVision/temp_results/", filePred, sep="")
@@ -34,7 +34,7 @@ names(pred)
 #define which columns in pred are meta-data and whch columns are probabilities for each speaces
 metaCols<-1:which(names(pred)=="species_count")
 probCols<-(which(names(pred)=="species_count")+1):dim(pred)[[2]]
-
+names(pred)[metaCols]
 
 #species labesl 
 pathPredLabels<-paste("../PlotDiversiVision/assets/species_list/", filePredLabels,sep="")
@@ -80,19 +80,32 @@ head(gt2)
 #**  1. per subplot_id, list species that have prob > thresh across all grids. 
 #**  2. Compare this list to gt2 list for each subplot_id
 
-#*1. Function to list of  predicted species
+#*1. Function to get list of  predicted species
 nameAboveThreshPerGrid<-function(probVec, labs,t=0.05){
   return(labs[probVec>t])
 }
 nameAboveThreshPerSubplot<-function(predSubPlot, labs,t=0.05){
   probMatrix<-predSubPlot[,-metaCols]
-  out<-apply(probMatrix,1,nameAboveThreshPerGrid,labs, t)
-  return(unique(unlist(out)))
+  out<- apply(probMatrix,1,nameAboveThreshPerGrid,labs, t)
+  return(unique(as.vector(unlist(out))))
 }
 #check functions
-#spId<-"31_1_1"
-#nameAboveThreshPerGrid(probVec=pred[1,-metaCols], names(pred)[-metaCols], t=.1)
-#nameAboveThreshPerSubplot(predSubPlot=pred[pred$subplot_id==spId,], labs=names(pred)[-metaCols], t=.1)
+spId<-"31_1_1"
+nameAboveThreshPerGrid(probVec=pred[1,-metaCols], names(pred)[-metaCols], t=.1)
+nameAboveThreshPerGrid(probVec=pred[2,-metaCols], names(pred)[-metaCols], t=.1)
+nameAboveThreshPerGrid(probVec=pred[3,-metaCols], names(pred)[-metaCols], t=.1)
+nameAboveThreshPerGrid(probVec=pred[4,-metaCols], names(pred)[-metaCols], t=.1)
+nameAboveThreshPerSubplot(predSubPlot=pred[pred$subplot_id==spId,], labs=names(pred)[-metaCols], t=.1)
+#DELETE
+#spId<-"41_1_4"; temp<-pred[pred$subplot_id==spId,]
+#should<-c(
+#nameAboveThreshPerGrid(probVec=temp[1,-metaCols], names(pred)[-metaCols], t=.1),
+#nameAboveThreshPerGrid(probVec=temp[2,-metaCols], names(pred)[-metaCols], t=.1),
+#nameAboveThreshPerGrid(probVec=temp[3,-metaCols], names(pred)[-metaCols], t=.1),
+#nameAboveThreshPerGrid(probVec=temp[4,-metaCols], names(pred)[-metaCols], t=.1)
+#)
+#nameAboveThreshPerSubplot(predSubPlot=temp, labs=names(pred)[-metaCols], t=.1)
+
 
 #*1. For all subplots, list predictd species
 predList<-split(pred, f=pred$subplot_id)
