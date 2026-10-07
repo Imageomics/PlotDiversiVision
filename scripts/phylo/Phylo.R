@@ -2,7 +2,7 @@
 #Author Braedon Lineman 8/19/2026
 ######## REQUIRED************* Run "assessBioCLipOutcomes.r" first
 
-Neon_plot_data<-read.csv("C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/assets/NEON_plotData.csv")
+Neon_plot_data<-read.csv("~/PlotDiversiVision/assets/NEON_plotData.csv")
 
 #*** create a tall, skinny data frame that includes true with predicted species and adds column
 
@@ -109,7 +109,7 @@ result_tree <- phylo.maker(TreeDF, tree     = GBOTB.extended.TPL,
                            scenarios=c("S1","S2","S3"))
 
 
-write.tree(result_tree$scenario.3, file = "C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/assets/PlotVision_tree.tre")
+write.tree(result_tree$scenario.3, file = "~/PlotDiversiVision/assets/PlotVision_tree.tre")
 
 
 ### plot the phylogenies with node ages displayed.
@@ -142,34 +142,27 @@ axisPhylo(side = 1, cex.axis = 0.8)
 mtext("Time (Ma before present)", side = 1, line = 2.5, cex = 0.9)
 title("Time-Dated Phylogenetic Tree\n(V.PhyloMaker2, S3)")
 
-tree<- read.tree("C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/assets/PlotVision_tree.tre")
+tree<- read.tree("~/PlotDiversiVision/assets/PlotVision_tree.tre")
 
 pdist<-cophenetic(tree)
 
 #############Begin recovered script
 
-## ============================================================
-## RECOVERED SCRIPT
+## RECOVERED SCRIPT using Claude Sonnet Model
 ## Reconstructed from R console history after accidental
 ## git-pull overwrite. Dead-end attempts, typos, and repeated
-## re-definitions from the trace have been removed/consolidated.
-## Please review before re-running -- a few ambiguous spots are
-## flagged with comments below.
-## ============================================================
+## re-definitions from the trace have been removed/consolidated
+#code here is pretty messy, pulled from BL phylogeny map script
 
 library(ape)
 library(ggplot2)
 library(tidyr)
 
-## ------------------------------------------------------------
-## 1. Load tree & basic diagnostics
-## ------------------------------------------------------------
-tree <- read.tree("C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/assets/PlotVision_tree.tre")
+##  Load tree & basic diagnostics
+tree <- read.tree("~/PlotDiversiVision/assets/PlotVision_tree.tre")
 
 distance_matrix <- cophenetic(tree)
-## ------------------------------------------------------------
-## 2. Plot the time-dated phylogeny
-## ------------------------------------------------------------
+## Plot the time-dated phylogeny
 plot.phylo(
   tree,
   type           = "phylogram",
@@ -187,12 +180,11 @@ title("Time-Dated Phylogenetic Tree\n(V.PhyloMaker2, S3)")
 
 # NOTE: original trace referenced `result_tree$scenario.3`, which was
 # never defined in this session (threw "object 'result_tree' not found").
+#this was lost in re-writre/recovery process and yet to be fixed.
 # The working fallback used in the trace was simply:
 nodelabels(round(branching.times(tree), 1), cex = 1)
 
-## ------------------------------------------------------------
-## 3. Build long-format cophenetic distance data for heatmap
-## ------------------------------------------------------------
+## Build long-format cophenetic distance data for heatmap
 Pdist_mat <- cophenetic(tree)
 
 Pdist_df <- as.data.frame(Pdist_mat)
@@ -212,9 +204,7 @@ sp_levels <- gsub("_", " ", rownames(Pdist_mat)[sp_clust])
 Pdist_long$sp1 <- factor(Pdist_long$sp1, levels = sp_levels)
 Pdist_long$sp2 <- factor(Pdist_long$sp2, levels = sp_levels)
 
-## ------------------------------------------------------------
-## 4. Custom theme
-## ------------------------------------------------------------
+## Custom theme - BL from other phylo project, basically optional, should re-do or set new theme
 theme_adm <- function() {
   theme_bw(base_size = 11) +
     theme(
@@ -228,9 +218,7 @@ theme_adm <- function() {
     )
 }
 
-## ------------------------------------------------------------
-## 5. Heatmap of pairwise phylogenetic (cophenetic) distance
-## ------------------------------------------------------------
+##  Heatmap of pairwise phylogenetic (cophenetic) distance
 
 p2 <- ggplot(Pdist_long, aes(x = sp1, y = sp2, fill = dist)) +
   geom_tile() +
@@ -239,18 +227,16 @@ p2 <- ggplot(Pdist_long, aes(x = sp1, y = sp2, fill = dist)) +
   labs(title    = "Phylogenetic Distance",
        subtitle = "Based on UPhyloMaker2",
        x = NULL, y = NULL) +
-  theme_adm() +
+theme_adm + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, face = "italic", size = 7),
         axis.text.y = element_text(face = "italic", size = 7),
         panel.grid  = element_blank())
 
 print(p2)
 
-## ------------------------------------------------------------
-## 6. Quick exploratory checks
-## ------------------------------------------------------------
+##  Quick exploratory checks
 hist(Pdist_long$dist)
 plot(Pdist_long$sp1, Pdist_long$dist)
 
-# tprfpr <- read.csv("C:/Users/Braec/Desktop/Florapalooza/PlotDiversiVision/playWithBioClipResults/tprFpr.csv")
+# tprfpr <- read.csv("~/PlotDiversiVision/playWithBioClipResults/tprFpr.csv")
 # View(tprfpr)
