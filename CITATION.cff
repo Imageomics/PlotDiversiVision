@@ -30,7 +30,7 @@ keywords:
   - "plant diversity"
   - "computer vision"
   - "classification"
-license: "MIT"
+license: "CC0-1.0"
 message: "If you find this work helpful in your research, please cite it."
 repository-code: "https://github.com/Imageomics/PlotDiversiVision"
 title: "Florapalooza plot diversity image segmentation and bioclip identification"
