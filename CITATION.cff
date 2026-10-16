@@ -1,0 +1,38 @@
+abstract: >-
+  <p>The purpose of this repo is to play with ideas to automate measures of plant diversity in images. The images may be found here: https://huggingface.co/datasets/imageomics/NEON-plant-subplot-pilot. These are images taken from two sites and several plots within the sites. Species identified in these images are provided in this repo.</p>
+  <p>This repo includes code to 1) call a foundational model BioCLIP 2 to determine probabilities of species appearing in each image, 2) process the BioCLIP 2 results to create a structured dataset of specific species predictions, and 3) assess the quality of predictions.</p>
+authors:
+- family-names: "Barnett"
+  given-names: "Dave"
+- family-names: "Chowdhury"
+  given-names: "Arpita"
+- family-names: "Gu"
+  given-names: "Jianyang"
+- family-names: "House"
+  given-names: "Leanna"
+- family-names: "Jeon"
+  given-names: "Sooyoung"
+- family-names: "Law"
+  given-names: "Eugene P"
+- family-names: "Lineman"
+  given-names: "Braedon"
+cff-version: 1.2.0
+date-released: "2026-07-10"
+identifiers:
+  - description: "The GitHub release URL of tag 1.0.0."
+    type: url
+    value: "https://github.com/Imageomics/PlotDiversiVision/releases/tag/1.0.0"
+  - description: "The GitHub source tree URL aligned to release tag 1.0.0."
+    type: url
+    value: "https://github.com/Imageomics/PlotDiversiVision/tree/1.0.0"
+keywords:
+  - "imageomics"
+  - "plant diversity"
+  - "computer vision"
+  - "classification"
+license: "MIT"
+message: "If you find this work helpful in your research, please cite it."
+repository-code: "https://github.com/Imageomics/PlotDiversiVision"
+title: "Florapalooza plot diversity image segmentation and bioclip identification"
+version: "1.0.0"
+type: software
